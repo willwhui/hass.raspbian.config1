@@ -1,1 +1,13 @@
-[]
+# Following testing rule works
+# - alias: 'Random sensor trigger twitter'
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.random_change
+#     to: "on"
+#   action:
+#     service: notify.twitter_wang3an
+#     data:
+#       message:
+#     data_template:
+#       message: >
+#         Auto tweet : Random value {{ states.sensor.random_1.state }} is less than 50.  
