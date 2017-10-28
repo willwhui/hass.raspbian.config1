@@ -1,0 +1,16 @@
+# Following testing alert works
+# test_twitter_wang3an:
+#   name: The random value < 50 now
+#   done_message: The random value >= 50 now.
+#   entity_id: binary_sensor.random_change
+#   state: 'on'
+#   repeat: 
+#     - 1
+#     - 1
+#     - 1
+#     - 30
+#   can_acknowledge: True
+#   skip_first: False
+#   notifiers:
+#     - twitter_wang3an_not_exists # wont work
+#     # - twitter_wang3an # will work

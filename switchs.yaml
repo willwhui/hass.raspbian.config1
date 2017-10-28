@@ -1,0 +1,7 @@
+# - platform: orvibo # <------ works, but without name
+- platform: orvibo
+  discovery: false
+  switches:
+    - host: 192.168.1.208
+      mac:  ac:cf:23:27:9f:f2
+      name: "orvibo-s20"
