@@ -1,5 +1,5 @@
-- platform: template  # <---------- a kind of platform
-  sensors:            #<----------- this ki1nd "template binary sensor" of sensors
-    random_change:       #<----------- a particular sensor
-      friendly_name: "A random value less than 50"
-      value_template: "{{ states.sensor.random_1.state | float < 50 }}"
+# - platform: template  # <---------- a kind of platform
+#   sensors:            #<----------- this ki1nd "template binary sensor" of sensors
+#     random_change:       #<----------- a particular sensor
+#       friendly_name: "A random value less than 50"
+#       value_template: "{{ states.sensor.random_1.state | float < 50 }}"
