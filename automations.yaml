@@ -11,3 +11,18 @@
 #     data_template:
 #       message: >
 #         Auto tweet : Random value {{ states.sensor.random_1.state }} is less than 50.  
+
+- alias: 'Daily modem power off at 5:50'
+  trigger:
+    platform: time
+    at: 05:50:00
+  action:
+    service: switch.turn_off
+    entity_id: switch.xiaomi_mi_wifi_socket_basic
+- alias: 'Daily modem power on at 5:53'
+  trigger:
+    platform: time
+    at: 05:53:00
+  action:
+    service: switch.turn_on
+    entity_id: switch.xiaomi_mi_wifi_socket_basic
