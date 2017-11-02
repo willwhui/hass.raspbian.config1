@@ -3,9 +3,9 @@
   discovery: false
   switches:
     - host: 192.168.1.208
-      mac:  ac:cf:23:27:9f:f2
+      mac:  !secret orvibo_wifi_socket_mac
       name: "orvibo-s20"
 - platform: xiaomi_miio
   name: "Xiaomi Mi WiFi Socket Basic"
   host: 192.168.31.205
-  token: 3ac085cb54178e85caf60d3ffbb5d7a9
+  token: !secret xiaomi_wifi_socket_basic_token
