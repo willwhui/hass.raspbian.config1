@@ -9,3 +9,4 @@
   name: "Xiaomi Mi WiFi Socket Basic"
   host: 192.168.31.205
   token: !secret xiaomi_wifi_socket_basic_token
+  emulated_hue_name: "modem power"
