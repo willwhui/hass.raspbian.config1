@@ -26,3 +26,14 @@
   action:
     service: switch.turn_on
     entity_id: switch.xiaomi_mi_wifi_socket_basic
+- alias: 'TTS on finished Clean'
+  trigger:
+    platform: state
+    entity_id: vacuum.xiaomi_clean_robot
+    from: 'on'
+    to: 'off'
+  action:
+    service: tts.google_say
+    entity_id: media_player.living_room_home
+    data:
+      message: 'My lord, your clean robot had just finished cleaning.'
