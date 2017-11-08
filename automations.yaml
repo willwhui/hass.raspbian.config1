@@ -36,4 +36,4 @@
     service: tts.google_say
     entity_id: media_player.living_room_home
     data:
-      message: 'My lord, your clean robot had just finished cleaning.'
+      message: !include cleaner-robot-job-done.yaml

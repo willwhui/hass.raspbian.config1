@@ -1,0 +1,6 @@
+>
+{{ [
+"My lord, your cleaner robot had just finished cleaning.",
+"Your room had just been cleaned by your droid, my master.",
+"My lord, your droid report that it just had it's cleaning job done.",
+] | random }} 
