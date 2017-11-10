@@ -26,7 +26,7 @@
   action:
     service: switch.turn_on
     entity_id: switch.xiaomi_mi_wifi_socket_basic
-- alias: 'TTS on finished Clean'
+- alias: 'TTS on finished Cleaning'
   trigger:
     platform: state
     entity_id: vacuum.xiaomi_clean_robot
