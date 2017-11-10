@@ -4,10 +4,10 @@
   switches:
     - host: 192.168.1.208
       mac:  !secret orvibo_wifi_socket_mac
-      name: "s20(orvibo)"
+      name: "s20 (orvibo)"
   emulated_hue_name: "s20"
 - platform: xiaomi_miio
-  name: "modem power(Xiaomi Mi WiFi Socket Basic)"
+  name: "modem power (Xiaomi Mi WiFi Socket Basic)"
   host: 192.168.31.205
   token: !secret xiaomi_wifi_socket_basic_token
   emulated_hue_name: "modem power"

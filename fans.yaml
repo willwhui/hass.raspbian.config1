@@ -1,5 +1,5 @@
 - platform: xiaomi_miio
-  name: "Xiaomi Air Purifier 2"
+  name: "Purifier (Xiaomi Air Purifier 2)"
   host: 192.168.31.149
   token: !secret xiaomi_air_purifier_2_token
   emulated_hue_name: "Purifier"

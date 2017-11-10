@@ -1,5 +1,5 @@
 - platform: xiaomi_miio
-  name: "Xiaomi Clean Robot"
+  name: "cleaner (Xiaomi Clean Robot)"
   host: 192.168.31.249
   token: !secret xiaomi_vacuum_robot_token
   emulated_hue_name: "cleaner"
