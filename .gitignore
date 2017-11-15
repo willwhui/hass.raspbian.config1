@@ -7,3 +7,5 @@ secrets.yaml
 .secrets.yaml.swp
 tts
 emulated_hue_ids.json
+google_calendars.yaml
+.google.token

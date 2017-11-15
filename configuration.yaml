@@ -77,6 +77,9 @@ emulated_hue:
 tts:
   - platform: google
   # - language: 'cmn-Hans-CN'
+google:
+  client_id: !secret google_calendar_oauth_hass_client_1_id
+  client_secret: !secret google_calendar_oauth_hass_client_1_secret
 
 group: !include groups.yaml
 automation: !include automations.yaml

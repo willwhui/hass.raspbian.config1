@@ -15,17 +15,33 @@
 - alias: 'Daily modem power off at 5:50'
   trigger:
     platform: time
-    at: 05:50:00
+    at: '05:50:00'
   action:
     service: switch.turn_off
-    entity_id: switch.xiaomi_mi_wifi_socket_basic
+    entity_id: switch.modem_xiaomi_mi_wifi_socket_basic
 - alias: 'Daily modem power on at 5:53'
   trigger:
     platform: time
-    at: 05:53:00
+    at: '05:53:00'
   action:
     service: switch.turn_on
-    entity_id: switch.xiaomi_mi_wifi_socket_basic
+    entity_id: switch.modem_xiaomi_mi_wifi_socket_basic
+
+- alias: 'Daily orvibo power on at 6:00'
+  trigger:
+    platform: time
+    at: '06:00:30'
+  action:
+    service: switch.turn_on
+    entity_id: switch.orange_orvibo_wifi_socket
+- alias: 'Daily orvibo power off at 7:00'
+  trigger:
+    platform: time
+    at: '07:00:00'
+  action:
+    service: switch.turn_off
+    entity_id: switch.orange_orvibo_wifi_socket
+
 - alias: 'TTS on finished Cleaning'
   trigger:
     platform: state
