@@ -1,11 +1,11 @@
+*.swp
 .HA_VERSION
-.gitignore.swp
 .uuid
-home-assistant.log
-home-assistant_v2.db
+*.token
+*.log
+*.db
 secrets.yaml
-.secrets.yaml.swp
 tts
 emulated_hue_ids.json
 google_calendars.yaml
-.google.token
+known_devices.yaml

@@ -1,0 +1,12 @@
+# - platform: luci # failed , with message :  Error setting up platform luci
+#   host: 192.168.1.1
+#   # name: 'Openwrt Router'
+#   username: !secret openwrt_router_user_name
+#   password: !secret openwrt_router_password
+#   # interval_seconds: 1
+#   # consider_home: 1
+#   track_new_devices: yes
+
+- platform: nmap_tracker
+  hosts: 192.168.1.206 # sky worth TV ip address
+  home_interval: 60

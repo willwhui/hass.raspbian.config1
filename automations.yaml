@@ -27,29 +27,56 @@
     service: switch.turn_on
     entity_id: switch.modem_xiaomi_mi_wifi_socket_basic
 
-- alias: 'Daily orvibo power on at 6:00'
-  trigger:
-    platform: time
-    at: '06:00:30'
-  action:
-    service: switch.turn_on
-    entity_id: switch.orange_orvibo_wifi_socket
-- alias: 'Daily orvibo power off at 7:00'
-  trigger:
-    platform: time
-    at: '07:00:00'
-  action:
-    service: switch.turn_off
-    entity_id: switch.orange_orvibo_wifi_socket
+# - alias: 'Daily orvibo power on at 6:00'
+#   trigger:
+#     platform: time
+#     at: '06:00:00'
+#   action:
+#     service: switch.turn_on
+#     entity_id: switch.orange_orvibo_wifi_socket
+# - alias: 'Daily orvibo power off at 7:00'
+#   trigger:
+#     platform: time
+#     at: '07:00:00'
+#   action:
+#     service: switch.turn_off
+#     entity_id: switch.orange_orvibo_wifi_socket
 
-- alias: 'TTS on finished Cleaning'
+- alias: 'TTS on finished cleaning'
   trigger:
     platform: state
-    entity_id: vacuum.xiaomi_clean_robot
+    entity_id: vacuum.cleaner_xiaomi_clean_robot
     from: 'on'
     to: 'off'
   action:
     service: tts.google_say
     entity_id: media_player.living_room_home
     data:
-      message: !include cleaner-robot-job-done.yaml
+      message: "My lord, your cleaner robot had just finished cleaning."
+      # message: !include cleaner-robot-job-done.yaml
+
+- alias: 'TV power on when Chromecast playing'
+  trigger:
+    platform: state
+    entity_id: media_player.living_room_tv
+    from: 'idle'
+    to: 'playing'
+  condition:
+    condition: state
+    entity_id: device_tracker.skyworthtvlan
+    state: 'home' # detected
+    # state: 'not_home' # not detected
+  action:
+    - service: media_player.media_pause # waiting for tv power on
+      entity_id: media_player.living_room_tv
+    # - service: switch.turn_off
+    #   entity_id: switch.orange_orvibo_wifi_socket
+    # - delay: '00:00:1' # delay befor power on
+    # - service: switch.turn_on
+    #   entity_id: switch.orange_orvibo_wifi_socket
+    - delay: '00:00:3' # can't be too short, or chromecast won't respones
+    - service: media_player.media_play # continue playing
+      entity_id: media_player.living_room_tv
+    - service: device_tracker.see # update TV state
+      data:
+        dev_id: skyworthtvlan

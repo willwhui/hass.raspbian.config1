@@ -70,8 +70,10 @@ vacuum: !include vacuums.yaml
 
 fan: !include fans.yaml
 
+device_tracker: !include device_trackers.yaml
+
 emulated_hue:
-  # type: alexa no need since v 0.57
+  # type: alexa # no need since v 0.57
 
 # Text to speech
 tts:
