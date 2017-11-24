@@ -6,8 +6,20 @@
       mac:  !secret orvibo_wifi_socket_mac
       name: "orange (Orvibo WiFi Socket)"
   emulated_hue_name: "orange"
+
 - platform: xiaomi_miio
   name: "modem (Xiaomi Mi WiFi Socket Basic)"
   host: 192.168.31.59
   token: !secret xiaomi_wifi_socket_basic_token
   emulated_hue_name: "modem"
+
+- platform: broadlink
+  host: 192.168.31.196
+  mac: !secret broadlink_rm2_switch_mac
+  friendly_name: "broadlink rm2"
+  switches:
+    tv_skyworth:
+      friendly_name: "Skyworth TV Power"
+      command_on: !secret broadlink_rm2_switch_skywort_tv_on_packet
+      command_off: !secret broadlink_rm2_switch_skywort_tv_on_packet
+  emulated_hue_name: "Skyworth"

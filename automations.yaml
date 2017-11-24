@@ -64,17 +64,14 @@
   condition:
     condition: state
     entity_id: device_tracker.skyworthtvlan
-    state: 'home' # detected
-    # state: 'not_home' # not detected
+    # state: 'home' # detected (for test)
+    state: 'not_home' # not detected
   action:
     - service: media_player.media_pause # waiting for tv power on
       entity_id: media_player.living_room_tv
-    # - service: switch.turn_off
-    #   entity_id: switch.orange_orvibo_wifi_socket
-    # - delay: '00:00:1' # delay befor power on
-    # - service: switch.turn_on
-    #   entity_id: switch.orange_orvibo_wifi_socket
-    - delay: '00:00:3' # can't be too short, or chromecast won't respones
+    - service: switch.turn_on
+      entity_id: switch.skyworth_tv_power
+    - delay: '00:00:5' # left some seconds for tv power on
     - service: media_player.media_play # continue playing
       entity_id: media_player.living_room_tv
     - service: device_tracker.see # update TV state
