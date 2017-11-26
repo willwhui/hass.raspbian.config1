@@ -52,26 +52,29 @@
     service: tts.google_say
     entity_id: media_player.living_room_home
     data:
-      message: "My lord, your cleaner robot had just finished cleaning."
-      # message: !include cleaner-robot-job-done.yaml
+      message: !include tts-cleaner-robot-job-done.yaml
+      # message: "My lord, your cleaner robot had just finished cleaning."
 
 - alias: 'TV power on when Chromecast playing'
   trigger:
-    platform: state
-    entity_id: media_player.living_room_tv
-    from: 'idle'
-    to: 'playing'
+    - platform: state
+      entity_id: media_player.living_room_tv
+      from: 'off'
+      to: 'idle'
+    - platform: state
+      entity_id: media_player.living_room_tv
+      from: 'off'
+      to: 'playing'
   condition:
     condition: state
-    entity_id: device_tracker.skyworthtvlan
-    # state: 'home' # detected (for test)
-    state: 'not_home' # not detected
+    entity_id: binary_sensor.skyworth_tv
+    state: 'off' # not detected
   action:
     - service: media_player.media_pause # waiting for tv power on
       entity_id: media_player.living_room_tv
     - service: switch.turn_on
       entity_id: switch.skyworth_tv_power
-    - delay: '00:00:5' # left some seconds for tv power on
+    - delay: '00:00:30' # left some seconds for tv power on
     - service: media_player.media_play # continue playing
       entity_id: media_player.living_room_tv
     - service: device_tracker.see # update TV state
