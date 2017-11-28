@@ -77,6 +77,17 @@
     - delay: '00:00:30' # left some seconds for tv power on
     - service: media_player.media_play # continue playing
       entity_id: media_player.living_room_tv
-    - service: device_tracker.see # update TV state
-      data:
-        dev_id: skyworthtvlan
+
+- alias: 'TTS on event : take a walk'
+  trigger:
+    platform: state
+    entity_id: calendar.take_a_walk
+    from: 'off'
+    to: 'on'
+  action:
+    service: tts.google_say
+    entity_id: media_player.living_room_home
+    data:
+      # message: "Time to take a walk, human!"
+      message: "嗨！该站起来走走了！"
+      language: "zh"
