@@ -75,6 +75,7 @@ device_tracker: !include device_trackers.yaml
 emulated_hue:
   # type: alexa # no need since v 0.57
 
+timer: !include timers.yaml
 # Text to speech
 tts:
   - platform: google
@@ -85,3 +86,9 @@ google:
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
+
+input_boolean:
+  notify_home:
+    name: Notify when someone arrives home
+    initial: off
+    icon: mdi:car

@@ -1,0 +1,5 @@
+# timer_for_something:
+#   duration: '00:01:00'
+
+timer_for_repeat_tts_take_a_walk:
+  duration: '00:00:10'

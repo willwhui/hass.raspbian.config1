@@ -52,8 +52,8 @@
     service: tts.google_say
     entity_id: media_player.living_room_home
     data:
-      message: !include tts-cleaner-robot-job-done.yaml
-      # message: "My lord, your cleaner robot had just finished cleaning."
+      # message: !include tts-cleaner-robot-job-done.yaml # this mode won't work
+      message: "My lord, your cleaner robot had just finished cleaning."
 
 - alias: 'TV power on when Chromecast playing'
   trigger:
@@ -78,16 +78,41 @@
     - service: media_player.media_play # continue playing
       entity_id: media_player.living_room_tv
 
-- alias: 'TTS on event : take a walk'
+################################################################
+# begin : automation for "stop working, take a walk"
+- alias: "TTS on event (speak and start timer): stop working, take a walk"
   trigger:
     platform: state
-    entity_id: calendar.take_a_walk
-    from: 'off'
-    to: 'on'
+    entity_id: calendar.start_work
+    from: 'on'
+    to: 'off' # stop working
   action:
-    service: tts.google_say
-    entity_id: media_player.living_room_home
-    data:
-      # message: "Time to take a walk, human!"
-      message: "嗨！该站起来走走了！"
-      language: "zh"
+    - service: tts.google_say
+      entity_id: media_player.living_room_home
+      data:
+        message: "Time to take a walk, human!"
+    - service: switch.turn_on # set the signal on
+      entity_id: switch.orange_orvibo_wifi_socket
+    - service: timer.start # start the timer for repeat
+      entity_id: timer.timer_for_repeat_tts_take_a_walk
+
+- alias: "TTS on timer (speak and start timer again): stop working, take a walk"
+  trigger:
+    platform: state
+    entity_id: timer.timer_for_repeat_tts_take_a_walk
+    to: 'idle' # time up
+  condition:
+    condition: state
+    entity_id: switch.orange_orvibo_wifi_socket
+    state: 'on' # repeat if signal is on
+  action:
+    - service: tts.google_say
+      entity_id: media_player.living_room_home
+      data:
+        # message: "Time to take a walk, human!"
+        message: "喂！够了够了，必须站起来走走了！"
+        language: "zh"
+    - service: timer.start # start this timer again
+      entity_id: timer.timer_for_repeat_tts_take_a_walk
+# end : automation for "stop working, take a walk"
+################################################################
