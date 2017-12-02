@@ -1,0 +1,4 @@
+work_state:
+  name: "Work" # Alexa can not control entities with multi-words-names 
+  initial: off
+  icon: mdi:laptop

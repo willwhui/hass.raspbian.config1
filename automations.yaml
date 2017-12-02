@@ -80,13 +80,45 @@
 
 ################################################################
 # begin : automation for "stop working, take a walk"
-- alias: "TTS on event (speak and start timer): stop working, take a walk"
+- alias: "TTS on work event: start"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.work_state
+      to: 'on'
+  action:
+    - service: tts.google_say
+      entity_id: media_player.living_room_home
+      data:
+        message: "Start to work, timer set."
+    - service: timer.start # start the timer for x minutes
+      entity_id: timer.timer_for_tts_start_work
+# - alias: "TTS on work event: start"
+#   trigger:
+#     - platform: homeassistant # handle hass started event
+#       event: start
+#     - platform: state
+#       entity_id: calendar.start_work # handle common runtime event
+#       to: 'on' # received an event
+#   condition:
+#     condition: state
+#     entity_id: calendar.start_work
+#     state: 'on' # event work is on
+#   action:
+#     - service: tts.google_say
+#       entity_id: media_player.living_room_home
+#       data:
+#         message: "Start to work, timer set."
+#     - service: timer.start # start the timer for x minutes
+#       entity_id: timer.timer_for_tts_start_work
+
+- alias: "TTS on work event: speak"
   trigger:
     platform: state
-    entity_id: calendar.start_work
-    from: 'on'
-    to: 'off' # stop working
+    entity_id: timer.timer_for_tts_start_work
+    to: 'idle' # work time up
   action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.work_state
     - service: tts.google_say
       entity_id: media_player.living_room_home
       data:
@@ -94,12 +126,13 @@
     - service: switch.turn_on # set the signal on
       entity_id: switch.orange_orvibo_wifi_socket
     - service: timer.start # start the timer for repeat
-      entity_id: timer.timer_for_repeat_tts_take_a_walk
+      entity_id: timer.timer_for_tts_repeat_take_a_walk
 
-- alias: "TTS on timer (speak and start timer again): stop working, take a walk"
+
+- alias: "TTS on work event: speak again"
   trigger:
     platform: state
-    entity_id: timer.timer_for_repeat_tts_take_a_walk
+    entity_id: timer.timer_for_tts_repeat_take_a_walk
     to: 'idle' # time up
   condition:
     condition: state
@@ -113,6 +146,6 @@
         message: "喂！够了够了，必须站起来走走了！"
         language: "zh"
     - service: timer.start # start this timer again
-      entity_id: timer.timer_for_repeat_tts_take_a_walk
+      entity_id: timer.timer_for_tts_repeat_take_a_walk
 # end : automation for "stop working, take a walk"
 ################################################################

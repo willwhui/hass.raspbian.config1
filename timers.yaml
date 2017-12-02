@@ -1,5 +1,13 @@
 # timer_for_something:
 #   duration: '00:01:00'
 
-timer_for_repeat_tts_take_a_walk:
-  duration: '00:00:10'
+timer_for_tts_start_work:
+  name: "TTS Timer : start work for X minutes"
+  icon: mdi:laptop
+  #duration: '00:00:10' # test
+  duration: '00:40:00'
+
+timer_for_tts_repeat_take_a_walk:
+  name: "TTS Timer for repate : take a walk"
+  icon: mdi:walk
+  duration: '00:00:8'

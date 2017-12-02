@@ -66,19 +66,20 @@ notify: !include notifies.yaml
 
 alert: !include alerts.yaml
 
+input_boolean: !include input_booleans.yaml
+
 vacuum: !include vacuums.yaml
 
 fan: !include fans.yaml
 
 device_tracker: !include device_trackers.yaml
 
-emulated_hue:
-  # type: alexa # no need since v 0.57
-
 timer: !include timers.yaml
+
 # Text to speech
 tts:
   - platform: google
+
 google:
   client_id: !secret google_calendar_oauth_hass_client_1_id
   client_secret: !secret google_calendar_oauth_hass_client_1_secret
@@ -87,8 +88,14 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 
-input_boolean:
-  notify_home:
-    name: Notify when someone arrives home
-    initial: off
-    icon: mdi:car
+emulated_hue:
+  exposed_domains:
+    - light
+    - fan
+    - switch
+    - vacuum
+    - media_player
+    - input_boolean
+    - timer
+    - group
+

@@ -2,4 +2,4 @@
   name: "Purifier (Xiaomi Air Purifier 2)"
   host: 192.168.31.203
   token: !secret xiaomi_air_purifier_2_token
-  emulated_hue_name: "Purifier"
+  # emulated_hue_name: "Purifier"  # no need 
