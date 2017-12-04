@@ -1,0 +1,5 @@
+gateways:
+  # - host: 192.168.31.183
+  - host: 192.168.1.178
+    mac: !secret xiaomi_gateway_mac
+    key: s4y1epmihtc4mg86 # use !secret mode will cause "invalid key" error

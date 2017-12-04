@@ -5,7 +5,7 @@ timer_for_tts_start_work:
   name: "TTS Timer : start work for X minutes"
   icon: mdi:laptop
   #duration: '00:00:10' # test
-  duration: '00:40:00'
+  duration: '00:45:00'
 
 timer_for_tts_repeat_take_a_walk:
   name: "TTS Timer for repate : take a walk"

@@ -1,0 +1,24 @@
+################################################################
+# Xiaomi Gateway
+light.gateway_light_7811dc64e702:
+   friendly_name: 'Xiaomi Gateway Light'
+sensor.Illumination_7811dc64e702:
+   friendly_name: 'Xiaomi Gateway Light Sensor'
+
+
+binary_sensor.motion_sensor_158d0001d984c6:
+  icon: mdi:numeric-0-box
+  friendly_name: 'Body Sensor 0'
+
+binary_sensor.motion_sensor_158d0001db25e2:
+  icon: mdi:numeric-1-box
+  friendly_name: 'Body Sensor 1'
+
+binary_sensor.motion_sensor_158d0001db5021:
+  icon: mdi:numeric-2-box
+  friendly_name: 'Body Sensor 2'
+
+binary_sensor.cube_158d000103a704:
+  icon: mdi:cube
+  friendly_name: 'Magic Cube'
+################################################################

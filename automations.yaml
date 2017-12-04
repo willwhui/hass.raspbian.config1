@@ -111,7 +111,7 @@
 #     - service: timer.start # start the timer for x minutes
 #       entity_id: timer.timer_for_tts_start_work
 
-- alias: "TTS on work event: speak"
+- alias: "TTS on work event: end"
   trigger:
     platform: state
     entity_id: timer.timer_for_tts_start_work
@@ -129,7 +129,7 @@
       entity_id: timer.timer_for_tts_repeat_take_a_walk
 
 
-- alias: "TTS on work event: speak again"
+- alias: "TTS on work event: end repeat"
   trigger:
     platform: state
     entity_id: timer.timer_for_tts_repeat_take_a_walk
@@ -149,3 +149,67 @@
       entity_id: timer.timer_for_tts_repeat_take_a_walk
 # end : automation for "stop working, take a walk"
 ################################################################
+
+################################################################
+# test begin
+# - alias: "test on ON"
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.test
+#       to: 'on'
+#   action:
+#     - service: xiaomi_aqara.play_ringtone
+#       data:
+#         gw_mac: !secret xiaomi_gateway_mac
+#         ringtone_id: 8
+#         ringtone_vol: 8
+
+# - alias: "test on OFF"
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.test
+#       to: 'off'
+#   action:
+#     - service: xiaomi_aqara.stop_ringtone
+#       data:
+#         gw_mac: !secret xiaomi_gateway_mac
+
+- alias: "test on sensor turn bool on"
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: binary_sensor.motion_sensor_158d0001db5021
+  condition:
+    condition: state
+    entity_id: input_boolean.test
+    state: 'off'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.test
+    # - service: xiaomi_aqara.play_ringtone
+    #   data:
+    #     gw_mac: !secret xiaomi_gateway_mac
+    #     ringtone_id: 8
+    #     ringtone_vol: 3
+
+- alias: "test on sensor turn bool off"
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: binary_sensor.motion_sensor_158d0001db5021
+  condition:
+    condition: state
+    entity_id: input_boolean.test
+    state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.test
+    # - service: xiaomi_aqara.stop_ringtone
+    #   data:
+    #     gw_mac: !secret xiaomi_gateway_mac
+# test end
+################################################################
+
+ 
