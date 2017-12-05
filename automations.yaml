@@ -80,18 +80,18 @@
 
 ################################################################
 # begin : automation for "stop working, take a walk"
-- alias: "TTS on work event: start"
-  trigger:
-    - platform: state
-      entity_id: input_boolean.work_state
-      to: 'on'
-  action:
-    - service: tts.google_say
-      entity_id: media_player.living_room_home
-      data:
-        message: "Start to work, timer set."
-    - service: timer.start # start the timer for x minutes
-      entity_id: timer.timer_for_tts_start_work
+# - alias: "TTS on work event: start" # by setting local timer
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.work_state
+#       to: 'on'
+#   action:
+#     - service: tts.google_say
+#       entity_id: media_player.living_room_home
+#       data:
+#         message: "Start to work, timer set."
+#     - service: timer.start # start the timer for x minutes
+#       entity_id: timer.timer_for_tts_start_work
 # - alias: "TTS on work event: start"
 #   trigger:
 #     - platform: homeassistant # handle hass started event
@@ -111,14 +111,29 @@
 #     - service: timer.start # start the timer for x minutes
 #       entity_id: timer.timer_for_tts_start_work
 
-- alias: "TTS on work event: end"
+# - alias: "TTS on work event: end"
+#   trigger:
+#     platform: state
+#     entity_id: timer.timer_for_tts_start_work
+#     to: 'idle' # work time up
+#   action:
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.work_state
+#     - service: tts.google_say
+#       entity_id: media_player.living_room_home
+#       data:
+#         message: "Time to take a walk, human!"
+#     - service: switch.turn_on # set the signal on
+#       entity_id: switch.orange_orvibo_wifi_socket
+#     - service: timer.start # start the timer for repeat
+#       entity_id: timer.timer_for_tts_repeat_take_a_walk
+
+- alias: "TTS on work event: ended" # by google event
   trigger:
     platform: state
-    entity_id: timer.timer_for_tts_start_work
-    to: 'idle' # work time up
+    entity_id: calendar.start_work
+    to: 'off' # work event ended
   action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.work_state
     - service: tts.google_say
       entity_id: media_player.living_room_home
       data:
@@ -128,8 +143,7 @@
     - service: timer.start # start the timer for repeat
       entity_id: timer.timer_for_tts_repeat_take_a_walk
 
-
-- alias: "TTS on work event: end repeat"
+- alias: "TTS on work event: repeat after ended"
   trigger:
     platform: state
     entity_id: timer.timer_for_tts_repeat_take_a_walk
