@@ -1,7 +1,8 @@
 # - platform: yr
 - platform: time_date
   display_options:
-    - 'date_time'
+    - 'date'
+    - 'time'
 # - platform: random
 #   name: random 1
 #   minimum: 0

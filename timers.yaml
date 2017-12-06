@@ -11,3 +11,8 @@ timer_for_tts_repeat_take_a_walk:
   name: "TTS Timer for repate : take a walk"
   icon: mdi:walk
   duration: '00:00:8'
+
+timer_on_magic_tube_rotated: # will start after cube rotation
+  name: "Magic Cube rotated"
+  icon: mdi:cube
+  duration: '00:00:30' # will stop after x seconds

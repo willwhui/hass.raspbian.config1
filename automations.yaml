@@ -45,7 +45,7 @@
 - alias: 'TTS on finished cleaning'
   trigger:
     platform: state
-    entity_id: vacuum.cleaner_xiaomi_clean_robot
+    entity_id: vacuum.cleaner_xiaomi_cleaner_robot
     from: 'on'
     to: 'off'
   action:
@@ -164,6 +164,46 @@
 # end : automation for "stop working, take a walk"
 ################################################################
 
+- alias: "TTS on Magic Cube free fall: time"
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d000103a704
+      action_type: free_fall
+  action:
+    - service: tts.google_say
+      entity_id: media_player.living_room_home
+      data_template:
+        message: >
+          Time now: {{ states("sensor.time")}}.
+    - service: timer.start # a 10 seconds timer, as a signal for next action: rotate
+      entity_id: timer.timer_on_magic_tube_rotated
+
+- alias: "TTS on Magic Cube rotate: volume"
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d000103a704
+      action_type: rotate
+  condition:
+    condition: state
+    entity_id: timer.timer_on_magic_tube_rotated
+    state: 'active' # repeat if signal is on
+  action:
+    - service_template: >
+        {% if trigger.event.data.action_value > 0 %}
+            media_player.volume_up
+        {% else %}
+            media_player.volume_down
+        {% endif %}
+      entity_id: media_player.living_room_home
+    - service: timer.cancel # restart timer
+      entity_id: timer.timer_on_magic_tube_rotated
+    - service: timer.start
+      entity_id: timer.timer_on_magic_tube_rotated
+
 ################################################################
 # test begin
 # - alias: "test on ON"
@@ -190,10 +230,9 @@
 
 - alias: "test on sensor turn bool on"
   trigger:
-    - platform: event
-      event_type: motion
-      event_data:
-        entity_id: binary_sensor.motion_sensor_158d0001db5021
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d0001db5021
+      to: 'on'
   condition:
     condition: state
     entity_id: input_boolean.test
@@ -209,10 +248,9 @@
 
 - alias: "test on sensor turn bool off"
   trigger:
-    - platform: event
-      event_type: motion
-      event_data:
-        entity_id: binary_sensor.motion_sensor_158d0001db5021
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d0001db5021
+      to: 'on'
   condition:
     condition: state
     entity_id: input_boolean.test
