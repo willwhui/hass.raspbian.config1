@@ -9,7 +9,7 @@
 
 - platform: command_line
   name: "skyworth tv"
-  command: ping -W 1 -c 1 192.168.1.206 > /dev/null 2>&1 && echo success || echo fail
+  command: !secret ping_skyworth_tv_ip
   device_class: connectivity
   payload_on: "success"
   payload_off: "fail"

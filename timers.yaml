@@ -16,3 +16,13 @@ timer_on_magic_tube_rotated: # will start after cube rotation
   name: "Magic Cube rotated"
   icon: mdi:cube
   duration: '00:00:30' # will stop after x seconds
+
+timer_on_magic_tube_shake_air: # will start after cube shaked
+  name: "Magic Cube shaked"
+  icon: mdi:cube
+  duration: '00:00:30' # will stop after x seconds
+
+timer_on_magic_tube_flip90: # will start after cube flip 90 degree
+  name: "Magic Cube fliped 90"
+  icon: mdi:cube
+  duration: '00:00:30' # will stop after x seconds

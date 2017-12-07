@@ -7,11 +7,11 @@
 #   # consider_home: 1
 #   track_new_devices: yes
 
-- platform: nmap_tracker
-  hosts: 192.168.1.205-207 # to fix bug alway track sky worth TV ip address
-  home_interval: 30000
-  exclude:
-    - 192.168.1.206 # sky worth TV ip address
+# - platform: nmap_tracker
+#   hosts: 192.168.1.205-207 # to fix bug alway track sky worth TV ip address
+#   home_interval: 30000
+#   exclude:
+#     - 192.168.1.206 # sky worth TV ip address
 
 # - platform: ping
 #   interval_seconds: 1

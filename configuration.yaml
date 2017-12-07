@@ -72,6 +72,8 @@ vacuum: !include vacuums.yaml
 
 fan: !include fans.yaml
 
+light: !include ligths.yaml
+
 device_tracker: !include device_trackers.yaml
 
 timer: !include timers.yaml

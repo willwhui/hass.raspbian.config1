@@ -176,8 +176,8 @@
       entity_id: media_player.living_room_home
       data_template:
         message: >
-          Time now: {{ states("sensor.time")}}.
-    - service: timer.start # a 10 seconds timer, as a signal for next action: rotate
+          Time now: {{ now().strftime('%-I:%M %P') }}
+    - service: timer.start # an X seconds timer, as a signal for next action: rotate
       entity_id: timer.timer_on_magic_tube_rotated
 
 - alias: "TTS on Magic Cube rotate: volume"
@@ -203,6 +203,120 @@
       entity_id: timer.timer_on_magic_tube_rotated
     - service: timer.start
       entity_id: timer.timer_on_magic_tube_rotated
+
+################################################################
+
+- alias: "Magic Cube shake air: light off"
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d000103a704
+      action_type: shake_air
+  condition:
+    condition: state
+    entity_id: light.livingroom_light_xiaomi_philips_ball
+    state: 'on' # if on then off
+  action:
+    - service: light.turn_off
+      entity_id: light.livingroom_light_xiaomi_philips_ball
+
+- alias: "Magic Cube shake air: light"
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d000103a704
+      action_type: shake_air
+  condition:
+    condition: state
+    entity_id: light.livingroom_light_xiaomi_philips_ball
+    state: 'off' # if off then on
+  action:
+    - service: light.turn_on
+      entity_id: light.livingroom_light_xiaomi_philips_ball
+    - service: timer.start # an X seconds timer, as a signal for next action: rotate
+      entity_id: timer.timer_on_magic_tube_shake_air
+
+- alias: "Magic Cube rotate: brightness"
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d000103a704
+      action_type: rotate
+  condition:
+    condition: state
+    entity_id: timer.timer_on_magic_tube_shake_air
+    state: 'active' # repeat if signal is on
+  action:
+    - service: light.turn_on
+      entity_id: light.livingroom_light_xiaomi_philips_ball
+      data_template: 
+        # set brightness by rotation value, only accept int value
+        brightness: >
+          {{states.light.livingroom_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4}}
+    - service: timer.cancel # restart timer
+      entity_id: timer.timer_on_magic_tube_shake_air
+    - service: timer.start
+      entity_id: timer.timer_on_magic_tube_shake_air
+
+################################################################
+
+- alias: "Magic Cube flip90: light off"
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d000103a704
+      action_type: flip90
+  condition:
+    condition: state
+    entity_id: light.small_bedroom_light_xiaomi_philips_ball
+    state: 'on' # if on then off
+  action:
+    - service: light.turn_off
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+
+- alias: "Magic Cube flip90: light"
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d000103a704
+      action_type: flip90
+  condition:
+    condition: state
+    entity_id: light.small_bedroom_light_xiaomi_philips_ball
+    state: 'off' # if off then on
+  action:
+    - service: light.turn_on
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+    - service: timer.start # an X seconds timer, as a signal for next action: rotate
+      entity_id: timer.timer_on_magic_tube_flip90
+
+- alias: "Magic Cube rotate: brightness"
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d000103a704
+      action_type: rotate
+  condition:
+    condition: state
+    entity_id: timer.timer_on_magic_tube_flip90
+    state: 'active' # repeat if signal is on
+  action:
+    - service: light.turn_on
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+      data_template: 
+        # set brightness by rotation value, only accept int value
+        brightness: >
+          {{states.light.small_bedroom_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4}}
+    - service: timer.cancel # restart timer
+      entity_id: timer.timer_on_magic_tube_flip90
+    - service: timer.start
+      entity_id: timer.timer_on_magic_tube_flip90
 
 ################################################################
 # test begin
