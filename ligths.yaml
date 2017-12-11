@@ -1,7 +1,7 @@
 - platform: xiaomi_miio
-  name: Livingroom light (Xiaomi Philips Ball)
-  host: !secret xiaomi_philips_light_livingroom_ip
-  token: !secret xiaomi_philips_light_livingroom_token
+  name: Living room light (Xiaomi Philips Ball)
+  host: !secret xiaomi_philips_light_living_room_ip
+  token: !secret xiaomi_philips_light_living_room_token
 
 - platform: xiaomi_miio
   name: Small bedroom light (Xiaomi Philips Ball)

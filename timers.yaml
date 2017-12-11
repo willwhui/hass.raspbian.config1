@@ -1,28 +1,19 @@
-# timer_for_something:
-#   duration: '00:01:00'
-
-timer_for_tts_start_work:
-  name: "TTS Timer : start work for X minutes"
-  icon: mdi:laptop
-  #duration: '00:00:10' # test
-  duration: '00:45:00'
-
-timer_for_tts_repeat_take_a_walk:
-  name: "TTS Timer for repate : take a walk"
+flag_tts_repeat_take_a_walk:
+  name: "Flag: TTS Timer for repate : take a walk"
   icon: mdi:walk
   duration: '00:00:8'
 
-timer_on_magic_tube_rotated: # will start after cube rotation
-  name: "Magic Cube rotated"
+flag_google_home_tts_activated: # will start after google home TTS activated
+  name: "Flag: Google Home TTS activated"
   icon: mdi:cube
   duration: '00:00:30' # will stop after x seconds
 
-timer_on_magic_tube_shake_air: # will start after cube shaked
-  name: "Magic Cube shaked"
+flag_living_room_light_activated: # will start after cube shaked
+  name: "Flag: Living room light activated"
   icon: mdi:cube
   duration: '00:00:30' # will stop after x seconds
 
-timer_on_magic_tube_flip90: # will start after cube flip 90 degree
-  name: "Magic Cube fliped 90"
+flag_small_bedroom_light_activated: # will start after cube flip 90 degree
+  name: "Flag: Small bedroom light activated"
   icon: mdi:cube
   duration: '00:00:30' # will stop after x seconds

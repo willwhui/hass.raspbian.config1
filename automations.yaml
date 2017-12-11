@@ -53,7 +53,7 @@
     entity_id: media_player.living_room_home
     data:
       # message: !include tts-cleaner-robot-job-done.yaml # this mode won't work
-      message: "My lord, your cleaner robot had just finished cleaning."
+      message: "Human, my cleaner robot had just finished cleaning."
 
 - alias: 'TV power on when Chromecast playing'
   trigger:
@@ -78,56 +78,6 @@
     - service: media_player.media_play # continue playing
       entity_id: media_player.living_room_tv
 
-################################################################
-# begin : automation for "stop working, take a walk"
-# - alias: "TTS on work event: start" # by setting local timer
-#   trigger:
-#     - platform: state
-#       entity_id: input_boolean.work_state
-#       to: 'on'
-#   action:
-#     - service: tts.google_say
-#       entity_id: media_player.living_room_home
-#       data:
-#         message: "Start to work, timer set."
-#     - service: timer.start # start the timer for x minutes
-#       entity_id: timer.timer_for_tts_start_work
-# - alias: "TTS on work event: start"
-#   trigger:
-#     - platform: homeassistant # handle hass started event
-#       event: start
-#     - platform: state
-#       entity_id: calendar.start_work # handle common runtime event
-#       to: 'on' # received an event
-#   condition:
-#     condition: state
-#     entity_id: calendar.start_work
-#     state: 'on' # event work is on
-#   action:
-#     - service: tts.google_say
-#       entity_id: media_player.living_room_home
-#       data:
-#         message: "Start to work, timer set."
-#     - service: timer.start # start the timer for x minutes
-#       entity_id: timer.timer_for_tts_start_work
-
-# - alias: "TTS on work event: end"
-#   trigger:
-#     platform: state
-#     entity_id: timer.timer_for_tts_start_work
-#     to: 'idle' # work time up
-#   action:
-#     - service: input_boolean.turn_off
-#       entity_id: input_boolean.work_state
-#     - service: tts.google_say
-#       entity_id: media_player.living_room_home
-#       data:
-#         message: "Time to take a walk, human!"
-#     - service: switch.turn_on # set the signal on
-#       entity_id: switch.orange_orvibo_wifi_socket
-#     - service: timer.start # start the timer for repeat
-#       entity_id: timer.timer_for_tts_repeat_take_a_walk
-
 - alias: "TTS on work event: ended" # by google event
   trigger:
     platform: state
@@ -141,12 +91,12 @@
     - service: switch.turn_on # set the signal on
       entity_id: switch.orange_orvibo_wifi_socket
     - service: timer.start # start the timer for repeat
-      entity_id: timer.timer_for_tts_repeat_take_a_walk
+      entity_id: timer.flag_tts_repeat_take_a_walk
 
 - alias: "TTS on work event: repeat after ended"
   trigger:
     platform: state
-    entity_id: timer.timer_for_tts_repeat_take_a_walk
+    entity_id: timer.flag_tts_repeat_take_a_walk
     to: 'idle' # time up
   condition:
     condition: state
@@ -160,11 +110,13 @@
         message: "喂！够了够了，必须站起来走走了！"
         language: "zh"
     - service: timer.start # start this timer again
-      entity_id: timer.timer_for_tts_repeat_take_a_walk
+      entity_id: timer.flag_tts_repeat_take_a_walk
 # end : automation for "stop working, take a walk"
 ################################################################
 
-- alias: "TTS on Magic Cube free fall: time"
+################################################################
+# TTS now time by google home
+- alias: "TTS on Magic Cube free fall: time" 
   trigger:
     platform: event
     event_type: cube_action
@@ -177,8 +129,10 @@
       data_template:
         message: >
           Time now: {{ now().strftime('%-I:%M %P') }}
+    - service: timer.cancel # restart timer
+      entity_id: timer.flag_google_home_tts_activated
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
-      entity_id: timer.timer_on_magic_tube_rotated
+      entity_id: timer.flag_google_home_tts_activated
 
 - alias: "TTS on Magic Cube rotate: volume"
   trigger:
@@ -189,7 +143,7 @@
       action_type: rotate
   condition:
     condition: state
-    entity_id: timer.timer_on_magic_tube_rotated
+    entity_id: timer.flag_google_home_tts_activated
     state: 'active' # repeat if signal is on
   action:
     - service_template: >
@@ -200,9 +154,9 @@
         {% endif %}
       entity_id: media_player.living_room_home
     - service: timer.cancel # restart timer
-      entity_id: timer.timer_on_magic_tube_rotated
+      entity_id: timer.flag_google_home_tts_activated
     - service: timer.start
-      entity_id: timer.timer_on_magic_tube_rotated
+      entity_id: timer.flag_google_home_tts_activated
 
 ################################################################
 
@@ -215,13 +169,13 @@
       action_type: shake_air
   condition:
     condition: state
-    entity_id: light.livingroom_light_xiaomi_philips_ball
+    entity_id: light.living_room_light_xiaomi_philips_ball
     state: 'on' # if on then off
   action:
     - service: light.turn_off
-      entity_id: light.livingroom_light_xiaomi_philips_ball
+      entity_id: light.living_room_light_xiaomi_philips_ball
 
-- alias: "Magic Cube shake air: light"
+- alias: "Magic Cube shake air: light on"
   trigger:
     platform: event
     event_type: cube_action
@@ -230,13 +184,13 @@
       action_type: shake_air
   condition:
     condition: state
-    entity_id: light.livingroom_light_xiaomi_philips_ball
+    entity_id: light.living_room_light_xiaomi_philips_ball
     state: 'off' # if off then on
   action:
     - service: light.turn_on
-      entity_id: light.livingroom_light_xiaomi_philips_ball
+      entity_id: light.living_room_light_xiaomi_philips_ball
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
-      entity_id: timer.timer_on_magic_tube_shake_air
+      entity_id: timer.flag_living_room_light_activated
 
 - alias: "Magic Cube rotate: brightness"
   trigger:
@@ -247,19 +201,19 @@
       action_type: rotate
   condition:
     condition: state
-    entity_id: timer.timer_on_magic_tube_shake_air
+    entity_id: timer.flag_living_room_light_activated
     state: 'active' # repeat if signal is on
   action:
     - service: light.turn_on
-      entity_id: light.livingroom_light_xiaomi_philips_ball
+      entity_id: light.living_room_light_xiaomi_philips_ball
       data_template: 
         # set brightness by rotation value, only accept int value
         brightness: >
-          {{states.light.livingroom_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4}}
+          {{states.light.living_room_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4}}
     - service: timer.cancel # restart timer
-      entity_id: timer.timer_on_magic_tube_shake_air
+      entity_id: timer.flag_living_room_light_activated
     - service: timer.start
-      entity_id: timer.timer_on_magic_tube_shake_air
+      entity_id: timer.flag_living_room_light_activated
 
 ################################################################
 
@@ -278,7 +232,7 @@
     - service: light.turn_off
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
 
-- alias: "Magic Cube flip90: light"
+- alias: "Magic Cube flip90: light on"
   trigger:
     platform: event
     event_type: cube_action
@@ -293,7 +247,7 @@
     - service: light.turn_on
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
-      entity_id: timer.timer_on_magic_tube_flip90
+      entity_id: timer.flag_small_bedroom_light_activated
 
 - alias: "Magic Cube rotate: brightness"
   trigger:
@@ -304,7 +258,7 @@
       action_type: rotate
   condition:
     condition: state
-    entity_id: timer.timer_on_magic_tube_flip90
+    entity_id: timer.flag_small_bedroom_light_activated
     state: 'active' # repeat if signal is on
   action:
     - service: light.turn_on
@@ -314,9 +268,43 @@
         brightness: >
           {{states.light.small_bedroom_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4}}
     - service: timer.cancel # restart timer
-      entity_id: timer.timer_on_magic_tube_flip90
+      entity_id: timer.flag_small_bedroom_light_activated
     - service: timer.start
-      entity_id: timer.timer_on_magic_tube_flip90
+      entity_id: timer.flag_small_bedroom_light_activated
+
+################################################################
+
+- alias: "Motion Sensor 2: living room light off"
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: binary_sensor.motion_sensor_158d0001db5021
+  condition:
+    condition: state
+    entity_id: light.living_room_light_xiaomi_philips_ball
+    state: 'on' # if on then off
+  action:
+    - service: light.turn_off
+      entity_id: light.living_room_light_xiaomi_philips_ball
+
+- alias: "Motion Sensor 2: living room light on"
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: binary_sensor.motion_sensor_158d0001db5021
+  condition:
+    condition: state
+    entity_id: light.living_room_light_xiaomi_philips_ball
+    state: 'off' # if off then on
+  action:
+    - service: light.turn_on
+      entity_id: light.living_room_light_xiaomi_philips_ball
+    - service: timer.start # an X seconds timer, as a signal for next action: rotate
+      entity_id: timer.flag_living_room_light_activated
+
+################################################################
 
 ################################################################
 # test begin
