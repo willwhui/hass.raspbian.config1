@@ -192,7 +192,7 @@
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
       entity_id: timer.flag_living_room_light_activated
 
-- alias: "Magic Cube rotate: brightness"
+- alias: "Magic Cube rotate: living room light brightness"
   trigger:
     platform: event
     event_type: cube_action
@@ -208,8 +208,15 @@
       entity_id: light.living_room_light_xiaomi_philips_ball
       data_template: 
         # set brightness by rotation value, only accept int value
+        # set brightness by rotation value, can not be 0?
         brightness: >
-          {{states.light.living_room_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4}}
+          {% if states.light.living_room_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4 < 0 %}
+            2
+          {% elif states.light.living_room_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4 < 255 %}
+            {{states.light.living_room_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4}}
+          {% else %}
+            255
+          {% endif %}
     - service: timer.cancel # restart timer
       entity_id: timer.flag_living_room_light_activated
     - service: timer.start
@@ -249,7 +256,7 @@
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
       entity_id: timer.flag_small_bedroom_light_activated
 
-- alias: "Magic Cube rotate: brightness"
+- alias: "Magic Cube rotate: small bed room light brightness"
   trigger:
     platform: event
     event_type: cube_action
@@ -266,7 +273,13 @@
       data_template: 
         # set brightness by rotation value, only accept int value
         brightness: >
-          {{states.light.small_bedroom_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4}}
+          {% if states.light.small_bedroom_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4 < 0 %}
+            2
+          {% elif states.light.small_bedroom_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4 < 255 %}
+            {{states.light.small_bedroom_light_xiaomi_philips_ball.attributes.brightness + trigger.event.data.action_value | int * 4}}
+          {% else %}
+            255
+          {% endif %}
     - service: timer.cancel # restart timer
       entity_id: timer.flag_small_bedroom_light_activated
     - service: timer.start
@@ -305,6 +318,57 @@
       entity_id: timer.flag_living_room_light_activated
 
 ################################################################
+# fade light on in morning
+- alias: "Fade light on in working days morning (start)"
+  trigger:
+      platform: time
+      at: '06:20:00'
+  condition:
+    condition: time
+    weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+  action:
+    # - service: light.turn_on
+    #   entity_id: light.small_bedroom_light_xiaomi_philips_ball
+    # - delay: '00:00:04' # delay for the light to response
+    - service: light.turn_on
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+      data: 
+        brightness: 5 # turn on light with minimum brightness
+    # - delay: '00:00:04' # delay for the light to response
+    - service: automation.turn_on # turn on a per second triggered rule
+      entity_id: automation.fade_light_on_in_working_days_morning_increasing
+
+- alias: "Fade light on in working days morning (increasing)"
+  initial_state: false
+  # hide_entity: true
+  trigger:
+      platform: time
+      seconds: '/4' # every 4 seconds, 1 second is too short for light to response
+  action:
+    - service: light.turn_on
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+      data_template: 
+        # set brightness by rotation value, only accept int value
+        # brightness step must >= 5?
+        brightness: >
+          {% if states.light.small_bedroom_light_xiaomi_philips_ball.attributes.brightness + 5 < 255 %}
+            {{states.light.small_bedroom_light_xiaomi_philips_ball.attributes.brightness + 5}}
+          {% else %}
+            255
+          {% endif %}
+
+- alias: "Fade light on in working days morning (stop)"
+  trigger:
+      platform: time
+      at: '06:30:00'
+  action:
+    - service: automation.turn_off
+      entity_id: automation.fade_light_on_in_working_days_morning_increasing
 
 ################################################################
 # test begin
