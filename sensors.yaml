@@ -7,3 +7,11 @@
 #   name: random 1
 #   minimum: 0
 #   maximum: 100
+
+# World Air Quality Index
+- platform: waqi
+  token: !secret aqicn_api_token
+  locations:
+    - zhuhai
+  stations:
+    - zhuhai

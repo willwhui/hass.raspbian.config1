@@ -7,3 +7,17 @@ test:
   name: "test" # 
   initial: off
   icon: mdi:worker
+
+aqi_checker:
+  name: "aqi checker"
+  initial: off
+  icon: mdi:thought-bubble
+
+air_checker:
+  name: "air checker"
+  initial: off
+  icon: mdi:weather-fog
+
+running:
+  name: "running"
+  initial: off

@@ -17,8 +17,8 @@
   mac: !secret broadlink_rm2_switch_mac
   friendly_name: "Broadlink rm2"
   switches:
-    tv_skyworth:
-      friendly_name: "Skyworth TV Power"
+    skyworth_tv:
+      friendly_name: "TV"
       command_on: !secret broadlink_rm2_switch_skywort_tv_on_packet
       command_off: !secret broadlink_rm2_switch_skywort_tv_on_packet
   # emulated_hue_name: "Skyworth"  # no need 

@@ -55,14 +55,14 @@
       # message: !include tts-cleaner-robot-job-done.yaml # this mode won't work
       message: "Human, my cleaner robot had just finished cleaning."
 
-- alias: 'TV power on when Chromecast playing'
+- alias: 'Living room TV power on when Chromecast playing'
   trigger:
     - platform: state
-      entity_id: media_player.living_room_tv
+      entity_id: media_player.living_room_chromecast
       from: 'off'
       to: 'idle'
     - platform: state
-      entity_id: media_player.living_room_tv
+      entity_id: media_player.living_room_chromecast
       from: 'off'
       to: 'playing'
   condition:
@@ -71,12 +71,12 @@
     state: 'off' # not detected
   action:
     - service: media_player.media_pause # waiting for tv power on
-      entity_id: media_player.living_room_tv
+      entity_id: media_player.living_room_chromecast
     - service: switch.turn_on
-      entity_id: switch.skyworth_tv_power
+      entity_id: switch.tv
     - delay: '00:00:30' # left some seconds for tv power on
     - service: media_player.media_play # continue playing
-      entity_id: media_player.living_room_tv
+      entity_id: media_player.living_room_chromecast
 
 - alias: "TTS on work event: ended" # by google event
   trigger:
@@ -116,7 +116,7 @@
 
 ################################################################
 # TTS now time by google home
-- alias: "TTS on Magic Cube free fall: time" 
+- alias: "TTS on time: Magic Cube free fall" 
   trigger:
     platform: event
     event_type: cube_action
@@ -134,7 +134,7 @@
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
       entity_id: timer.flag_google_home_tts_activated
 
-- alias: "TTS on Magic Cube rotate: volume"
+- alias: "TTS on time volume: Magic Cube rotate"
   trigger:
     platform: event
     event_type: cube_action
@@ -160,7 +160,7 @@
 
 ################################################################
 
-- alias: "Magic Cube shake air: light off"
+- alias: "Living room light off: Magic Cube shake air"
   trigger:
     platform: event
     event_type: cube_action
@@ -175,7 +175,7 @@
     - service: light.turn_off
       entity_id: light.living_room_light_xiaomi_philips_ball
 
-- alias: "Magic Cube shake air: light on"
+- alias: "Living room light on: Magic Cube shake air"
   trigger:
     platform: event
     event_type: cube_action
@@ -192,7 +192,7 @@
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
       entity_id: timer.flag_living_room_light_activated
 
-- alias: "Magic Cube rotate: living room light brightness"
+- alias: "Living room light brightness: Magic Cube rotate"
   trigger:
     platform: event
     event_type: cube_action
@@ -224,7 +224,7 @@
 
 ################################################################
 
-- alias: "Magic Cube flip90: light off"
+- alias: "Small bed room light off: Magic Cube flip90"
   trigger:
     platform: event
     event_type: cube_action
@@ -239,7 +239,7 @@
     - service: light.turn_off
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
 
-- alias: "Magic Cube flip90: light on"
+- alias: "Small bed room light on: Magic Cube flip90"
   trigger:
     platform: event
     event_type: cube_action
@@ -256,7 +256,7 @@
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
       entity_id: timer.flag_small_bedroom_light_activated
 
-- alias: "Magic Cube rotate: small bed room light brightness"
+- alias: "Small bed room light brightness: Magic Cube rotate"
   trigger:
     platform: event
     event_type: cube_action
@@ -287,7 +287,7 @@
 
 ################################################################
 
-- alias: "Motion Sensor 2: living room light off"
+- alias: "Living room light off: Motion Sensor 2"
   trigger:
     - platform: event
       event_type: motion
@@ -301,7 +301,7 @@
     - service: light.turn_off
       entity_id: light.living_room_light_xiaomi_philips_ball
 
-- alias: "Motion Sensor 2: living room light on"
+- alias: "Living room light on: Motion Sensor 2"
   trigger:
     - platform: event
       event_type: motion
@@ -348,7 +348,7 @@
   # hide_entity: true
   trigger:
       platform: time
-      seconds: '/4' # every 4 seconds, 1 second is too short for light to response
+      seconds: '/12' # every 4 seconds, 1 second is too short for light to response
   action:
     - service: light.turn_on
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
@@ -369,7 +369,26 @@
   action:
     - service: automation.turn_off
       entity_id: automation.fade_light_on_in_working_days_morning_increasing
-
+################################################################
+- alias: "TTS on Air Quality Index"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.aqi_checker 
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.test 
+      to: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.aqi_checker
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.test
+    - service: tts.google_say
+      entity_id: media_player.living_room_home
+      data_template: 
+        message: >
+            AQI now: {{states.sensor.waqi_zhuhai.state}}
+    
 ################################################################
 # test begin
 # - alias: "test on ON"
@@ -430,4 +449,3 @@
 # test end
 ################################################################
 
- 
