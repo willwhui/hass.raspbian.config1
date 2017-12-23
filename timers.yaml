@@ -1,9 +1,4 @@
-flag_tts_repeat_take_a_walk:
-  name: "Flag: TTS Timer for repate : take a walk"
-  icon: mdi:walk
-  duration: '00:00:8'
-
-flag_google_home_tts_activated: # will start after google home TTS activated
+flag_google_home_tts_activated: # will start after google home TTS activated by cube free fall
   name: "Flag: Google Home TTS activated"
   icon: mdi:cube
   duration: '00:00:30' # will stop after x seconds
