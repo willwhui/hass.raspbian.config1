@@ -8,8 +8,8 @@ test:
   initial: off
   icon: mdi:worker
 
-air_checker:
-  name: "air checker"
+aqi:
+  name: "aqi"
   initial: off
   icon: mdi:weather-fog
 

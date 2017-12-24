@@ -398,6 +398,7 @@
       entity_id: light.living_room_light_xiaomi_philips_ball
 
 - alias: "Living room light on: Motion Sensor 2"
+  hide_entity: true
   trigger:
     - platform: event
       event_type: motion
@@ -422,47 +423,149 @@
     - platform: state
       entity_id: input_boolean.aqi_checker 
       to: 'on'
+  action:
+    - service: tts.google_say
+      entity_id: media_player.living_room_home
+      data_template: 
+        message: >
+          {% if states.sensor.waqi_zhuhai.state | int >=  300 %}
+            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's Brown. It's Hazardous. Everyone should avoid all outdoor exertion.
+          {% elif states.sensor.waqi_zhuhai.state | int >=  201 %}
+            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's purple. It's Very Unhealthy. Active children and adults, and people with respiratory disease, such as asthma, should avoid all outdoor exertion; everyone else, especially children, should limit outdoor exertion.
+          {% elif states.sensor.waqi_zhuhai.state | int >=  151 %}
+            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's Red. It's Unhealthy. Active children and adults, and people with respiratory disease, such as asthma, should avoid prolonged outdoor exertion; everyone else, especially children, should limit prolonged outdoor exertion.
+          {% elif states.sensor.waqi_zhuhai.state | int >=  101 %}
+            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's orange. It's Unhealthy for Sensitive Groups. Active children and adults, and people with respiratory disease, such as asthma, should limit prolonged outdoor exertion.
+          {% elif states.sensor.waqi_zhuhai.state | int >=  51 %}
+            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's Yellow. It's Moderate. Active children and adults, and people with respiratory disease, such as asthma, should limit prolonged outdoor exertion.
+          {% else %}
+            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's Green. It's Good. Have a nice day!
+          {% endif %}
+    # - delay: '00:00:05' # left some time for tts data transporting
+    # - service: tts.google_say
+    #   entity_id: media_player.living_room_home
+    #   data_template:
+    #     language: "zh" 
+    #     message: >
+    #       珠海现在的空气质量指数是：{{states.sensor.waqi_zhuhai.state}}
+
+
+# data_template: 
+#   rgb_color: > won't work, got error: 
+#   ERROR (MainThread) [homeassistant.core] Invalid service data for light.turn_on: None for dictionary value @ data['rgb_color']. Got '[128, 0, 128]'
+# split to several rules
+- alias: "Light on Air Quality Index: brown"
+  hide_entity: true
+  trigger:
     - platform: state
-      entity_id: input_boolean.air_checker 
+      entity_id: input_boolean.aqi_checker 
+      to: 'on'
+  condition:
+    condition: numeric_state
+    entity_id: sensor.waqi_zhuhai
+    #below: 
+    above: 300
+  action:
+    - service: light.turn_on
+      entity_id: light.gateway_light_7811dc64e702
+      data:
+        rgb_color: [165,42,42]
+
+- alias: "Light on Air Quality Index: purple"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.aqi_checker 
+      to: 'on'
+  condition:
+    condition: numeric_state
+    entity_id: sensor.waqi_zhuhai
+    below: 301
+    above: 200
+  action:
+    - service: light.turn_on
+      entity_id: light.gateway_light_7811dc64e702
+      data:
+        rgb_color: [128,0,128]
+
+- alias: "Light on Air Quality Index: red"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.aqi_checker 
+      to: 'on'
+  condition:
+    condition: numeric_state
+    entity_id: sensor.waqi_zhuhai
+    below: 201
+    above: 150
+  action:
+    - service: light.turn_on
+      entity_id: light.gateway_light_7811dc64e702
+      data:
+        rgb_color: [255,0,0]
+
+- alias: "Light on Air Quality Index: orange"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.aqi_checker 
+      to: 'on'
+  condition:
+    condition: numeric_state
+    entity_id: sensor.waqi_zhuhai
+    below: 151
+    above: 100
+  action:
+    - service: light.turn_on
+      entity_id: light.gateway_light_7811dc64e702
+      data:
+        rgb_color: [255,0,0]
+
+- alias: "Light on Air Quality Index: yellow"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.aqi_checker 
+      to: 'on'
+  condition:
+    condition: numeric_state
+    entity_id: sensor.waqi_zhuhai
+    below: 101
+    above: 50
+  action:
+    - service: light.turn_on
+      entity_id: light.gateway_light_7811dc64e702
+      data:
+        rgb_color: [255,0,0]
+
+- alias: "Light on Air Quality Index: green"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.aqi_checker 
+      to: 'on'
+  condition:
+    condition: numeric_state
+    entity_id: sensor.waqi_zhuhai
+    below: 51
+    #above: 50
+  action:
+    - service: light.turn_on
+      entity_id: light.gateway_light_7811dc64e702
+      data:
+        rgb_color: [255,0,0]
+
+- alias: "Light on Air Quality Index: brightness"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.aqi_checker 
       to: 'on'
   action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.aqi_checker
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.air_checker
     - service: light.turn_on
       entity_id: light.gateway_light_7811dc64e702
       data_template: 
-        # color_name: https://www.w3.org/TR/css-color-3/
-        # rgb_color: > won't work, got error: 
-        # ERROR (MainThread) [homeassistant.core] Invalid service data for light.turn_on: None for dictionary value @ data['rgb_color']. Got '[128, 0, 128]'
-        #   {% if states.sensor.waqi_zhuhai.state  | int >=  300 %}
-        #     {{[165,42,42]}}
-        #   {% elif states.sensor.waqi_zhuhai.state | int >=  201 %}
-        #     {{[128,0,128]}}
-        #   {% elif states.sensor.waqi_zhuhai.state | int >=  151 %}
-        #     {{[255,0,0]}}
-        #   {% elif states.sensor.waqi_zhuhai.state | int >=  101 %}
-        #     {{[255,22,0]}}
-        #   {% elif states.sensor.waqi_zhuhai.state | int >=  51 %}
-        #     {{[255,96,0]}}
-        #   {% else %}
-        #     {{[0,255,0]}}
-        #   {% endif %}
-        color_name: >-
-          {% if states.sensor.waqi_zhuhai.state  | int >=  300 %}
-            brown
-          {% elif states.sensor.waqi_zhuhai.state | int >=  201 %}
-            purple
-          {% elif states.sensor.waqi_zhuhai.state | int >=  151 %}
-            red
-          {% elif states.sensor.waqi_zhuhai.state | int >=  101 %}
-            orange
-          {% elif states.sensor.waqi_zhuhai.state | int >=  51 %}
-            yellow
-          {% else %}
-            green
-          {% endif %}
         brightness: >
           {% if states.sensor.waqi_zhuhai.state | int >=  300 %}
             {{states.sensor.waqi_zhuhai.state | int - 300 + 150}}
@@ -477,41 +580,48 @@
           {% else %}
             {{states.sensor.waqi_zhuhai.state | int + 200}}
           {% endif %}
-    - service: automation.turn_on # set a timer rule to turn off the light
-      entity_id: automation.tts_on_air_quality_index_light_off
-    - service: tts.google_say
-      entity_id: media_player.living_room_home
-      data_template: 
-        message: >
-          Wait a second.
-    - delay: '00:00:04' # left some time for tts data transporting
-    - service: tts.google_say
-      entity_id: media_player.living_room_home
-      data_template: 
-        message: >
-          Air Quality Index of Zhuhai now: {{states.sensor.waqi_zhuhai.state}}
-    # - delay: '00:00:05' # left some time for tts data transporting
-    # - service: tts.google_say
-    #   entity_id: media_player.living_room_home
-    #   data_template:
-    #     language: "zh" 
-    #     message: >
-    #       珠海现在的空气质量指数是：{{states.sensor.waqi_zhuhai.state}}
 
-- alias: "TTS on Air Quality Index: light off"
+- alias: "Light on Air Quality Index: blink and turn off"
   hide_entity: true
   trigger:
-    platform: time
-    seconds: '/10' # turn off light in 30 seconds
-  condition:
-    condition: state
-    entity_id: light.gateway_light_7811dc64e702
-    state: 'on'    
+    - platform: state
+      entity_id: input_boolean.aqi_checker 
+      to: 'on'
   action:
+    - service: light.turn_on
+      entity_id: light.gateway_light_7811dc64e702
+    - delay: "00:00:01"
     - service: light.turn_off
       entity_id: light.gateway_light_7811dc64e702
-    - service: automation.turn_off
-      entity_id: automation.tts_on_air_quality_index_light_off
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: light.gateway_light_7811dc64e702
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: light.gateway_light_7811dc64e702
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: light.gateway_light_7811dc64e702
+    - delay: "00:00:20"
+    - service: light.turn_off
+      entity_id: light.gateway_light_7811dc64e702
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.aqi_checker
+
+- alias: "Air Quality Index: manual check"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: light.gateway_light_7811dc64e702 
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_boolean.aqi_checker
+    state: 'off'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.aqi_checker
+  
 # end: AQI
 ################################################################
 
@@ -525,10 +635,8 @@
       entity_id: input_boolean.test
       to: 'on'
   action:
-    - service: light.turn_on
-      entity_id: light.gateway_light_7811dc64e702
-      data:
-        color_name: darkslateblue
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.aqi_checker
     # - service: xiaomi_aqara.play_ringtone
     #   data:
     #     gw_mac: !secret xiaomi_gateway_mac
