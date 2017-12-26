@@ -1,24 +1,24 @@
 ################################################################
 # Xiaomi Gateway
-light.gateway_light_7811dc64e702:
+!secret xiaomi_gateway_light_id:
    friendly_name: 'Xiaomi Gateway Light'
-sensor.Illumination_7811dc64e702:
+!secret xiaomi_gateway_illumination_id:
    friendly_name: 'Xiaomi Gateway Light Sensor'
 
 
-binary_sensor.motion_sensor_158d0001d984c6:
+!secret motion_sensor_0_id:
   icon: mdi:numeric-0-box
   friendly_name: 'Motion Sensor 0'
 
-binary_sensor.motion_sensor_158d0001db25e2:
+!secret motion_sensor_1_id:
   icon: mdi:numeric-1-box
   friendly_name: 'Motion Sensor 1'
 
-binary_sensor.motion_sensor_158d0001db5021:
+!secret motion_sensor_2_id:
   icon: mdi:numeric-2-box
   friendly_name: 'Motion Sensor 2'
 
-binary_sensor.cube_158d000103a704:
+!secret magic_cube_id:
   icon: mdi:cube
   friendly_name: 'Magic Cube'
 ################################################################
