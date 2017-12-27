@@ -76,7 +76,7 @@
 ################################################################
 # begin: TTS repeat signal turn on and auto off in x seconds
 - alias: "Turn on TTS repeat signal for x seconds"
-  #hide_entity: true
+  hide_entity: true
   initial_state: false
   trigger:
       platform: time
@@ -90,7 +90,7 @@
       entity_id: automation.turn_on_tts_repeat_signal_for_x_seconds
 
 - alias: "Turn off TTS repeat signal in x seconds"
-  #hide_entity: true
+  hide_entity: true
   initial_state: false
   trigger:
     - platform: time
@@ -110,7 +110,7 @@
 ################################################################
 # begin : automation for "stop working, take a walk"
 - alias: "TTS for take a walk: work event just ended" # triggered by google event
-  #hide_entity: true
+  hide_entity: true
   trigger:
     platform: state
     entity_id: calendar.start_work
@@ -120,12 +120,12 @@
       entity_id: automation.turn_on_tts_repeat_signal_for_x_seconds
     - service: automation.turn_on # turn on a timer drived rule
       entity_id: automation.tts_for_take_a_walk_repeating
-    - delay: "00:00:05" # left some time for signal on
+    - delay: "00:00:15" # left some time for signal on
     - service: automation.turn_on # turn on a timer triggered rule to check the signal
       entity_id: automation.tts_for_take_a_walk_check_signal_to_stop_repeating
 
 - alias: "TTS for take a walk: repeating"
-  #hide_entity: true
+  hide_entity: true
   initial_state: false
   trigger:
       platform: time
@@ -145,7 +145,7 @@
     - delay: "00:00:5" # left some time for tts
 
 - alias: "TTS for take a walk: check signal to stop repeating"
-  #hide_entity: true
+  hide_entity: true
   initial_state: false
   trigger:
       platform: time
@@ -165,7 +165,7 @@
 ################################################################
 # begin: fill water can before go to school
 - alias: "TTS for fill water can: timer rule triggered"
-  # hide_entity: true
+  hide_entity: true
   trigger:
       platform: time
       at: '07:05:00'
@@ -182,12 +182,12 @@
       entity_id: automation.turn_on_tts_repeat_signal_for_x_seconds
     - service: automation.turn_on # turn on a timer drived rule
       entity_id: automation.tts_for_fill_water_can_repeating
-    - delay: "00:00:05" # left some time for signal on
+    - delay: "00:00:20" # left some time for signal on
     - service: automation.turn_on # turn on a timer triggered rule to check the signal
       entity_id: automation.tts_for_fill_water_can_check_signal_to_stop_repeating
 
 - alias: "TTS for fill water can: repeating"
-  #hide_entity: true
+  hide_entity: true
   initial_state: false
   trigger:
       platform: time
@@ -207,7 +207,7 @@
     - delay: "00:00:5" # left some time for tts
 
 - alias: "TTS for fill water can: check signal to stop repeating"
-  #hide_entity: true
+  hide_entity: true
   initial_state: false
   trigger:
       platform: time
@@ -477,7 +477,22 @@
       entity_id: timer.flag_small_bedroom_light_activated
 
 ################################################################
-# begin: "Living room light off: Motion Sensor"
+# begin: "AQI check: Motion Sensor"
+- alias: "AQI check: Motion Sensor 0"
+  hide_entity: true
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: !secret motion_sensor_0_id
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.aqi_checker
+# end
+################################################################
+
+################################################################
+# begin: "Small bedroom light off: Motion Sensor"
 - alias: "Small bedroom light off: Motion Sensor 1"
   hide_entity: true
   trigger:
@@ -493,7 +508,7 @@
     - service: light.turn_off
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
 
-- alias: "Living room light on: Motion Sensor 1"
+- alias: "Small bedroom light on: Motion Sensor 1"
   hide_entity: true
   trigger:
     - platform: event
@@ -528,8 +543,6 @@
   action:
     - service: light.turn_off
       entity_id: light.living_room_light_xiaomi_philips_ball
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
 
 - alias: "Living room light on: Motion Sensor 2"
   hide_entity: true
@@ -547,8 +560,6 @@
       entity_id: light.living_room_light_xiaomi_philips_ball
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
       entity_id: timer.flag_living_room_light_activated
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
 # end: "Living room light off: Motion Sensor"
 ################################################################
 
@@ -658,7 +669,7 @@
     - service: light.turn_on
       entity_id: !secret xiaomi_gateway_light_id
       data:
-        rgb_color: [255,0,0]
+        rgb_color: [255,20,0]
 
 - alias: "Light on Air Quality Index: yellow"
   hide_entity: true
@@ -675,7 +686,7 @@
     - service: light.turn_on
       entity_id: !secret xiaomi_gateway_light_id
       data:
-        rgb_color: [255,0,0]
+        rgb_color: [255,100,0]
 
 - alias: "Light on Air Quality Index: green"
   hide_entity: true
@@ -692,7 +703,7 @@
     - service: light.turn_on
       entity_id: !secret xiaomi_gateway_light_id
       data:
-        rgb_color: [255,0,0]
+        rgb_color: [0,255,0]
 
 - alias: "Light on Air Quality Index: brightness"
   hide_entity: true
@@ -744,24 +755,6 @@
     - service: light.turn_off
       entity_id: !secret xiaomi_gateway_light_id
     - service: input_boolean.turn_off
-      entity_id: input_boolean.aqi_checker
-
-- alias: "Air Quality Index: manual check"
-  hide_entity: true
-  trigger:
-    - platform: state
-      entity_id: !secret xiaomi_gateway_light_id 
-      to: 'on'
-  condition:
-    - condition: state
-      entity_id: input_boolean.aqi_checker
-      state: 'off'
-    # xiaomi gateway light is also a tts signal. i shouldn't blink the light, or it will stop current repeating TTS
-    - condition: state
-      entity_id: turn_off_tts_repeat_signal_in_x_seconds 
-      state: 'off'
-  action:
-    - service: input_boolean.turn_on
       entity_id: input_boolean.aqi_checker
   
 # end: AQI
