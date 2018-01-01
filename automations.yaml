@@ -686,7 +686,7 @@
     - service: light.turn_on
       entity_id: !secret xiaomi_gateway_light_id
       data:
-        rgb_color: [255,100,0]
+        rgb_color: [255,140,0]
 
 - alias: "Light on Air Quality Index: green"
   hide_entity: true
@@ -737,9 +737,7 @@
       entity_id: input_boolean.aqi_checker 
       to: 'on'
   action:
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
+    - delay: "00:00:03" # left some time for the light respones the color setting action
     - service: light.turn_off
       entity_id: !secret xiaomi_gateway_light_id
     - delay: "00:00:01"
@@ -761,6 +759,96 @@
 ################################################################
 
 ################################################################
+# begin: Living room light contrl
+- alias: "Living room light control: on"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.light1 
+      to: 'on'
+  action:
+    - service: automation.trigger # it will turn on or off the light
+      entity_id: automation.living_room_light_on_motion_sensor_2
+
+- alias: "Living room light control: off"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.light1 
+      to: 'off'
+  action:
+    - service: automation.trigger # it will turn on or off the light
+      entity_id: automation.living_room_light_off_motion_sensor_2
+
+- alias: "Living room light state update: on"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: light.living_room_light_xiaomi_philips_ball 
+      to: 'on'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.light1
+
+- alias: "Living room light state update: off"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: light.living_room_light_xiaomi_philips_ball 
+      to: 'off'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.light1
+
+
+# end: Living room light contrl
+################################################################
+################################################################
+# begin: Small bedlight contrl
+- alias: "Small bedroom light control: on"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.light2 
+      to: 'on'
+  action:
+    - service: automation.trigger # it will turn on or off the light
+      entity_id: automation.small_bedroom_light_on_motion_sensor_1
+
+- alias: "Small bedroom light control: off"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.light2 
+      to: 'off'
+  action:
+    - service: automation.trigger # it will turn on or off the light
+      entity_id: automation.small_bedroom_light_off_motion_sensor_1
+
+- alias: "Small bedroom light state update: on"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+      to: 'on'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.light2
+
+- alias: "Small bedroom light state update: off"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball 
+      to: 'off'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.light2
+
+
+# end: Small bedroom light contrl
+################################################################
+################################################################
 # test begin
 
 - alias: "test on ON"
@@ -771,7 +859,7 @@
       to: 'on'
   action:
     - service: input_boolean.turn_on
-      entity_id: input_boolean.aqi_checker
+      entity_id: input_boolean.light1
     # - service: xiaomi_aqara.play_ringtone
     #   data:
     #     gw_mac: !secret xiaomi_gateway_mac
@@ -785,8 +873,8 @@
       entity_id: input_boolean.test
       to: 'off'
   action:
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.light1
 
     # - service: xiaomi_aqara.stop_ringtone
     #   data:

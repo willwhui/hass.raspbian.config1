@@ -17,3 +17,13 @@ aqi_checker:
   name: "aqi checker"
   initial: off
   icon: mdi:weather-fog
+
+light1:
+  name: "light 1"
+  initial: off
+  icon: mdi:lightbulb-outline
+
+light2:
+  name: "light 2"
+  initial: off
+  icon: mdi:lightbulb-outline
