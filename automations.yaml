@@ -492,79 +492,6 @@
 ################################################################
 
 ################################################################
-# begin: "Small bedroom light off: Motion Sensor"
-- alias: "Small bedroom light off: Motion Sensor 1"
-  hide_entity: true
-  trigger:
-    - platform: event
-      event_type: motion
-      event_data:
-        entity_id: !secret motion_sensor_1_id
-  condition:
-    condition: state
-    entity_id: light.small_bedroom_light_xiaomi_philips_ball
-    state: 'on' # if on then off
-  action:
-    - service: light.turn_off
-      entity_id: light.small_bedroom_light_xiaomi_philips_ball
-
-- alias: "Small bedroom light on: Motion Sensor 1"
-  hide_entity: true
-  trigger:
-    - platform: event
-      event_type: motion
-      event_data:
-        entity_id: !secret motion_sensor_1_id
-  condition:
-    condition: state
-    entity_id: light.small_bedroom_light_xiaomi_philips_ball
-    state: 'off' # if off then on
-  action:
-    - service: light.turn_on
-      entity_id: light.small_bedroom_light_xiaomi_philips_ball
-    - service: timer.start # an X seconds timer, as a signal for next action: rotate
-      entity_id: timer.flag_small_bedroom_light_activated
-# end: "Living room light off: Motion Sensor"
-################################################################
-
-################################################################
-# begin: "Living room light off: Motion Sensor"
-- alias: "Living room light off: Motion Sensor 2"
-  hide_entity: true
-  trigger:
-    - platform: event
-      event_type: motion
-      event_data:
-        entity_id: !secret motion_sensor_2_id
-  condition:
-    condition: state
-    entity_id: light.living_room_light_xiaomi_philips_ball
-    state: 'on' # if on then off
-  action:
-    - service: light.turn_off
-      entity_id: light.living_room_light_xiaomi_philips_ball
-
-- alias: "Living room light on: Motion Sensor 2"
-  hide_entity: true
-  trigger:
-    - platform: event
-      event_type: motion
-      event_data:
-        entity_id: !secret motion_sensor_2_id
-  condition:
-    condition: state
-    entity_id: light.living_room_light_xiaomi_philips_ball
-    state: 'off' # if off then on
-  action:
-    - service: light.turn_on
-      entity_id: light.living_room_light_xiaomi_philips_ball
-    - service: timer.start # an X seconds timer, as a signal for next action: rotate
-      entity_id: timer.flag_living_room_light_activated
-# end: "Living room light off: Motion Sensor"
-################################################################
-
-
-################################################################
 # begin: AQI
 - alias: "TTS on Air Quality Index"
   hide_entity: true
@@ -760,25 +687,31 @@
 
 ################################################################
 # begin: Living room light contrl
-- alias: "Living room light control: on"
-  hide_entity: true
+- alias: "Living room light state update: start up on"
+  #hide_entity: true
   trigger:
-    - platform: state
-      entity_id: input_boolean.light1 
-      to: 'on'
+    - platform: homeassistant
+      event: start
+  condition:
+    - condition: state
+      entity_id: light.living_room_light_xiaomi_philips_ball
+      state: 'on'
   action:
-    - service: automation.trigger # it will turn on or off the light
-      entity_id: automation.living_room_light_on_motion_sensor_2
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.light1
 
-- alias: "Living room light control: off"
-  hide_entity: true
+- alias: "Living room light state update: start up off"
+  #hide_entity: true
   trigger:
-    - platform: state
-      entity_id: input_boolean.light1 
-      to: 'off'
+    - platform: homeassistant
+      event: start
+  condition:
+    - condition: state
+      entity_id: light.living_room_light_xiaomi_philips_ball
+      state: 'off'
   action:
-    - service: automation.trigger # it will turn on or off the light
-      entity_id: automation.living_room_light_off_motion_sensor_2
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.light1
 
 - alias: "Living room light state update: on"
   hide_entity: true
@@ -800,30 +733,90 @@
     - service: input_boolean.turn_off
       entity_id: input_boolean.light1
 
+- alias: "Living room light control: on"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.light1 
+      to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.living_room_light_xiaomi_philips_ball
+
+- alias: "Living room light control: off"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.light1 
+      to: 'off'
+  action:
+    - service: light.turn_off
+      entity_id: light.living_room_light_xiaomi_philips_ball
+
+# begin: "Living room light on/off: Motion Sensor"
+- alias: "Living room light on: Motion Sensor"
+  hide_entity: true
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: !secret motion_sensor_1_id
+  condition:
+    condition: state
+    entity_id: light.living_room_light_xiaomi_philips_ball
+    state: 'off' # if off then on
+  action:
+    - service: light.turn_on
+      entity_id: light.living_room_light_xiaomi_philips_ball
+    - service: timer.start # an X seconds timer, as a signal for next action: rotate
+      entity_id: timer.flag_living_room_light_activated
+
+- alias: "Living room light off: Motion Sensor"
+  hide_entity: true
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: !secret motion_sensor_1_id
+  condition:
+    condition: state
+    entity_id: light.living_room_light_xiaomi_philips_ball
+    state: 'on' # if on then off
+  action:
+    - service: light.turn_off
+      entity_id: light.living_room_light_xiaomi_philips_ball
+# end: "Living room light on/off: Motion Sensor"
 
 # end: Living room light contrl
 ################################################################
+
 ################################################################
 # begin: Small bedlight contrl
-- alias: "Small bedroom light control: on"
-  hide_entity: true
+- alias: "Small bedroom light state update: start up on"
+  #hide_entity: true
   trigger:
-    - platform: state
-      entity_id: input_boolean.light2 
-      to: 'on'
+    - platform: homeassistant
+      event: start
+  condition:
+    - condition: state
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+      state: 'on'
   action:
-    - service: automation.trigger # it will turn on or off the light
-      entity_id: automation.small_bedroom_light_on_motion_sensor_1
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.light2
 
-- alias: "Small bedroom light control: off"
-  hide_entity: true
+- alias: "Small bedroom light state update: start up off"
+  #hide_entity: true
   trigger:
-    - platform: state
-      entity_id: input_boolean.light2 
-      to: 'off'
+    - platform: homeassistant
+      event: start
+  condition:
+    - condition: state
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+      state: 'off'
   action:
-    - service: automation.trigger # it will turn on or off the light
-      entity_id: automation.small_bedroom_light_off_motion_sensor_1
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.light2
 
 - alias: "Small bedroom light state update: on"
   hide_entity: true
@@ -845,9 +838,62 @@
     - service: input_boolean.turn_off
       entity_id: input_boolean.light2
 
+- alias: "Small bedroom light control: on"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.light2 
+      to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
 
+- alias: "Small bedroom light control: off"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.light2 
+      to: 'off'
+  action:
+    - service: light.turn_off
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+
+# begin: "Small bedroom light on/off: Motion Sensor"
+- alias: "Small bedroom light on: Motion Sensor"
+  hide_entity: true
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: !secret motion_sensor_2_id
+  condition:
+    condition: state
+    entity_id: light.small_bedroom_light_xiaomi_philips_ball
+    state: 'off' # if off then on
+  action:
+    - service: light.turn_on
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+    - service: timer.start # an X seconds timer, as a signal for next action: rotate
+      entity_id: timer.flag_small_bedroom_light_activated
+
+- alias: "Small bedroom light off: Motion Sensor"
+  hide_entity: true
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: !secret motion_sensor_2_id
+  condition:
+    condition: state
+    entity_id: light.small_bedroom_light_xiaomi_philips_ball
+    state: 'on' # if on then off
+  action:
+    - service: light.turn_off
+      entity_id: light.small_bedroom_light_xiaomi_philips_ball
+# end: "Small bedroom light on/off: Motion Sensor"
 # end: Small bedroom light contrl
 ################################################################
+
 ################################################################
 # test begin
 
