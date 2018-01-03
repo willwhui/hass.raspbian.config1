@@ -966,6 +966,76 @@
 ################################################################
 
 ################################################################
+# begin: All purifiers contrl
+- alias: "All purifiers state update: start up on"
+  hide_entity: true
+  trigger:
+    - platform: homeassistant
+      event: start
+  condition:
+    - condition: state
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+      state: 'on'
+    - condition: state
+      entity_id: switch.orvibo_wifi_socket
+      state: 'on'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.all_purifiers
+
+- alias: "All purifiers light state update: on"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+      to: 'on'
+    - platform: state
+      entity_id: switch.orvibo_wifi_socket
+      to: 'on'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.all_purifiers
+
+- alias: "All purifiers state update: off"
+  hide_entity: true
+  trigger: # not very good triggers
+    - platform: state
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+      to: 'off'
+    - platform: state
+      entity_id: switch.orvibo_wifi_socket 
+      to: 'off'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.all_purifiers
+
+- alias: "All purifiers control: on"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.all_purifiers 
+      to: 'on'
+  action:
+    - service: fan.turn_on
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+    - service: switch.turn_on
+      entity_id: switch.orvibo_wifi_socket
+
+- alias: "All purifiers control: off"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.all_purifiers 
+      to: 'off'
+  action:
+    - service: fan.turn_off
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+    - service: switch.turn_off
+      entity_id: switch.orvibo_wifi_socket
+# end: All purifiers contrl
+################################################################
+
+################################################################
 # test begin
 
 - alias: "test on ON"
