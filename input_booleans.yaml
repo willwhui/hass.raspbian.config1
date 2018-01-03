@@ -27,3 +27,8 @@ light2:
   name: "light 2"
   initial: off
   icon: mdi:lightbulb-outline
+
+switch_orange:
+  name: "Switch Orange"
+  initial: off
+  icon: mdi:flash

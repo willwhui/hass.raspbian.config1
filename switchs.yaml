@@ -3,7 +3,7 @@
   switches:
     - host: !secret orvibo_wifi_socket_ip
       mac:  !secret orvibo_wifi_socket_mac
-      name: "Orange (Orvibo WiFi Socket)"
+      name: "Orvibo WiFi Socket"
   # emulated_hue_name: "orange" # no need 
 
 - platform: xiaomi_miio
