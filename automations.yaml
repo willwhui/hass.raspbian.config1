@@ -159,6 +159,45 @@
       entity_id: automation.tts_for_take_a_walk_repeating
     - service: automation.turn_off # turn off self
       entity_id: automation.tts_for_take_a_walk_check_signal_to_stop_repeating
+
+# begin: "TTS for prompt to set a working timer: trigger"
+- alias: "TTS for prompt to set a working timer: trigger"
+  # hide_entity: true
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: !secret motion_sensor_1_id
+  condition:
+    condition: state
+    entity_id: calendar.start_work
+    state: 'off' # if no calendar.start_work
+  action:
+    - service: automation.turn_off # turn off self
+      entity_id: automation.tts_for_prompt_to_set_a_working_timer_trigger
+    - service: automation.turn_on # turn on a timer triggered rule to enable this again
+      entity_id: automation.tts_for_prompt_to_set_a_working_timer_enable_trigger_again
+    - service: tts.google_say
+      entity_id: media_player.living_room_home
+      data:
+        message: "Hey, man, you'd better setup a start work timer!"
+
+- alias: "TTS for prompt to set a working timer: enable trigger again"
+  # hide_entity: true
+  initial_state: false
+  trigger:
+      platform: time
+      minutes: '/20' # shouldn't be too short, because calendar state updating takes time
+      seconds: 00
+  action:
+    - service: automation.turn_off # turn self off
+      entity_id: automation.tts_for_prompt_to_set_a_working_timer_enable_trigger_again
+    - service: automation.turn_on # turn on the trigger again
+      entity_id: automation.tts_for_prompt_to_set_a_working_timer_trigger
+
+# end: "TTS for prompt to set a working timer: trigger"
+
+
 # end: automation for "stop working, take a walk"
 ################################################################
 
@@ -753,14 +792,15 @@
     - service: light.turn_off
       entity_id: light.living_room_light_xiaomi_philips_ball
 
-# begin: "Living room light on/off: Motion Sensor"
-- alias: "Living room light on: Motion Sensor"
+# begin: "Living room light on/off: Wireless button"
+- alias: "Living room light on: Wireless Button"
   hide_entity: true
   trigger:
-    - platform: event
-      event_type: motion
-      event_data:
-        entity_id: !secret motion_sensor_1_id
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: !secret wireless_button_0_id
+      click_type: single
   condition:
     condition: state
     entity_id: light.living_room_light_xiaomi_philips_ball
@@ -769,15 +809,16 @@
     - service: light.turn_on
       entity_id: light.living_room_light_xiaomi_philips_ball
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
-      entity_id: timer.flag_living_room_light_activated
+      entity_id: timer.flag_small_bedroom_light_activated
 
-- alias: "Living room light off: Motion Sensor"
+- alias: "Living room light off: Wireless Button"
   hide_entity: true
   trigger:
-    - platform: event
-      event_type: motion
-      event_data:
-        entity_id: !secret motion_sensor_1_id
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: !secret wireless_button_0_id
+      click_type: single
   condition:
     condition: state
     entity_id: light.living_room_light_xiaomi_philips_ball
@@ -785,7 +826,7 @@
   action:
     - service: light.turn_off
       entity_id: light.living_room_light_xiaomi_philips_ball
-# end: "Living room light on/off: Motion Sensor"
+# end: "Living room light on/off: Wireless button"
 
 # end: Living room light contrl
 ################################################################
@@ -891,6 +932,7 @@
     - service: light.turn_off
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
 # end: "Small bedroom light on/off: Motion Sensor"
+
 # end: Small bedroom light contrl
 ################################################################
 
