@@ -161,8 +161,18 @@
       entity_id: automation.tts_for_take_a_walk_check_signal_to_stop_repeating
 
 # begin: "TTS for prompt to set a working timer: trigger"
+- alias: "TTS for prompt to set a working timer: enable"
+  #hide_entity: true
+  trigger:
+    - platform: homeassistant
+      event: start # when all automation rules loaded by hass, this rule will then be triggerd.
+  action:
+    - service: automation.turn_on # turn off self
+      entity_id: automation.tts_for_prompt_to_set_a_working_timer_trigger
+
 - alias: "TTS for prompt to set a working timer: trigger"
-  # hide_entity: true
+  initial_state: false # to prevent the motion sensor trigger it at hass start before all rules loaded
+  #hide_entity: true
   trigger:
     - platform: event
       event_type: motion
@@ -183,8 +193,8 @@
         message: "Hey, man, you'd better setup a start work timer!"
 
 - alias: "TTS for prompt to set a working timer: enable trigger again"
-  # hide_entity: true
   initial_state: false
+  #hide_entity: true
   trigger:
       platform: time
       minutes: '/20' # shouldn't be too short, because calendar state updating takes time
@@ -1047,6 +1057,15 @@
     - platform: state
       entity_id: switch.orvibo_wifi_socket 
       to: 'off'
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+      state: 'off'
+    - condition: state
+      entity_id: switch.orvibo_wifi_socket
+      state: 'off'
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.all_purifiers
