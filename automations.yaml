@@ -34,18 +34,18 @@
 ################################################################
 
 - alias: 'TTS on finished cleaning'
-  hide_entity: true
+  #hide_entity: true
   trigger:
     platform: state
     entity_id: vacuum.cleaner_xiaomi_cleaner_robot
     from: 'on'
     to: 'off'
   action:
-    service: tts.google_say
-    entity_id: media_player.living_room_home
-    data:
-      # message: !include tts-cleaner-robot-job-done.yaml # this mode won't work
-      message: "Human, my cleaner robot had just finished cleaning."
+    - service: tts.google_say
+      entity_id: !secret current_media_player_id
+      data:
+        # message: !include tts-cleaner-robot-job-done.yaml # this mode won't work
+        message: "Human, my cleaner robot had just finished cleaning."
 
 ################################################################
 # begin : automation for TV power on when Chromecast playing
@@ -102,12 +102,12 @@
       seconds: '/10' # every x seconds, shouldn't too short for the light and TTS to response
   action:
     - service: tts.google_say
-      entity_id: media_player.living_room_home
+      entity_id: !secret current_media_player_id
       data:
         message: "Time to take a walk, human!"
     - delay: "00:00:5" # left some time for tts
     - service: tts.google_say
-      entity_id: media_player.living_room_home
+      entity_id: !secret current_media_player_id
       data:
         # message: "Time to take a walk, human!"
         message: "喂！够了够了，必须站起来走走了！"
@@ -146,7 +146,7 @@
     - service: automation.turn_off # turn off self
       entity_id: automation.tts_for_take_a_walk_check_signal_to_stop_repeating
 
-# begin: "TTS for prompt to set a working timer: trigger"
+# begin: "TTS for prompt to set a working timer"
 - alias: "TTS for prompt to set a working timer: enable at start"
   #hide_entity: true
   trigger:
@@ -174,7 +174,7 @@
     - service: automation.turn_on # turn on a timer triggered rule to enable this again
       entity_id: automation.tts_for_prompt_to_set_a_working_timer_enable_again
     - service: tts.google_say
-      entity_id: media_player.living_room_home
+      entity_id: !secret current_media_player_id
       data:
         message: "Hey, man, you'd better setup a start work timer!"
 
@@ -190,7 +190,7 @@
       entity_id: automation.tts_for_prompt_to_set_a_working_timer_enable_again
     - service: automation.turn_on # turn on the trigger again
       entity_id: automation.tts_for_prompt_to_set_a_working_timer_trigger
-# end: "TTS for prompt to set a working timer: trigger"
+# end: "TTS for prompt to set a working timer"
 
 # end: automation for "stop working, take a walk"
 ################################################################
@@ -227,12 +227,12 @@
       seconds: '/10' # every x seconds, shouldn't too short for the light and TTS to response
   action:
     - service: tts.google_say
-      entity_id: media_player.living_room_home
+      entity_id: !secret current_media_player_id
       data:
         message: "Hey Dad, remember to fill the water can."
     - delay: "00:00:5" # left some time for tts
     - service: tts.google_say
-      entity_id: media_player.living_room_home
+      entity_id: !secret current_media_player_id
       data:
         # message: "Time to take a walk, human!"
         message: "嗨，老爸，记得给水壶里装上水！"
@@ -342,7 +342,7 @@
       action_type: free_fall
   action:
     - service: tts.google_say
-      entity_id: media_player.living_room_home
+      entity_id: !secret current_media_player_id
       data_template:
         message: >
           Time now: {{ now().strftime('%-I:%M %P') }}
@@ -370,7 +370,7 @@
         {% else %}
             media_player.volume_down
         {% endif %}
-      entity_id: media_player.living_room_home
+      entity_id: !secret current_media_player_id
     - service: timer.cancel # restart timer
       entity_id: timer.flag_google_home_tts_activated
     - service: timer.start
@@ -536,7 +536,7 @@
       to: 'on'
   action:
     - service: tts.google_say
-      entity_id: media_player.living_room_home
+      entity_id: !secret current_media_player_id
       data_template: 
         message: >
           {% if states.sensor.waqi_zhuhai.state | int >=  300 %}
@@ -554,7 +554,7 @@
           {% endif %}
     # - delay: '00:00:05' # left some time for tts data transporting
     # - service: tts.google_say
-    #   entity_id: media_player.living_room_home
+    #   entity_id: !secret current_media_player_id
     #   data_template:
     #     language: "zh" 
     #     message: >
