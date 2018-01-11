@@ -93,6 +93,8 @@ media_player: !include media_players.yaml
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
+#counter: !include counters.yaml
+input_number: !include input_numbers.yaml
 
 emulated_hue:
   exposed_domains:

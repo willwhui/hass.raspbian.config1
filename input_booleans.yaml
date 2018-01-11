@@ -37,3 +37,8 @@ all_purifiers:
   name: "All Purifiers"
   initial: off
   icon: mdi:fan
+
+start_work:
+  name: "Work"
+  initial: off
+  icon: mdi:worker
