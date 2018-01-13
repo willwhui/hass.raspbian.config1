@@ -22,7 +22,12 @@
   icon: mdi:cube
   friendly_name: 'Magic Cube'
 
-!secret wireless_button_0_id:
+!secret wireless_button_1_id:
   icon: mdi:checkbox-blank-circle-outline
-  friendly_name: 'Wireless Button 0'
+  friendly_name: 'Wireless Button 1'
+
+!secret wireless_button_2_id:
+  icon: mdi:checkbox-blank-circle-outline
+  friendly_name: 'Wireless Button 2'
+
 ################################################################

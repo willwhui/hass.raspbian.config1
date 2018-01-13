@@ -1,5 +1,9 @@
 start_work_timer:
   name: 'Start work timer'
+  # do not set a initial value, 
+  # because this will cause it be initialized at every restart of hass.
+  # without this setting, hass will reload the last value it was, or set to '0' if it is the very first time initializing for it
+  # initial: 0
   min: 0
   max: 100
   step: 1
