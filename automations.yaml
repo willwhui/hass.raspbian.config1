@@ -921,43 +921,140 @@
     - service: input_boolean.turn_off
       entity_id: input_boolean.aqi
   
+# begin: All purifiers contrl
+- alias: "Turn on all purifiers automation"
+  trigger:
+    - platform: time
+      at: '23:00:00'
+  action:
+    - service: automation.turn_on
+      entity_id: automation.turn_off_all_purifiers_at_night_automatically_when_aqi_green
+    - service: automation.turn_on
+      entity_id: automation.turn_on_all_purifiers_at_night_automatically_when_aqi_yellow
+
+- alias: "Turn off all purifiers automation"
+  trigger:
+    - platform: time
+      at: '07:00:00'
+  action:
+    - service: automation.turn_off
+      entity_id: automation.turn_off_all_purifiers_at_night_automatically_when_aqi_green
+    - service: automation.turn_off
+      entity_id: automation.turn_on_all_purifiers_at_night_automatically_when_aqi_yellow
+
 - alias: "Turn on all purifiers at night automatically when AQI Yellow"
-  hide_entity: true
+  initial_state: false
+  #hide_entity: true
   trigger:
     - platform: time
       minutes: '/10' # every 10 minutes
       seconds: 00
   condition:
-    condition: and
-    conditions:
     - condition: numeric_state
       entity_id: sensor.waqi_zhuhai
       above: 50
-    - condition: time
-      after: '00:00:00'
-      before: '07:00:00'   
+    # condition: and # this time condition won't work, don't know why
+    # conditions:
+    # - condition: numeric_state
+    #   entity_id: sensor.waqi_zhuhai
+    #   above: 50
+    # - condition: time
+    #   after: '00:00:00'
+    #   before: '07:00:00'   
   action:
     - service: automation.trigger
       entity_id: automation.all_purifiers_control_on
 
 - alias: "Turn off all purifiers at night automatically when AQI Green"
-  hide_entity: true
+  initial_state: false
+  #hide_entity: true
   trigger:
     - platform: time
       minutes: '/10' # every 10 minutes
       seconds: 00
   condition:
-    condition: and
-    conditions:
     - condition: numeric_state
       entity_id: sensor.waqi_zhuhai
       below: 50
-    - condition: time
-      after: '00:00:00'
-      before: '07:00:00'   
   action:
     - service: automation.trigger
       entity_id: automation.all_purifiers_control_off
+
+- alias: "All purifiers state update: start up on"
+  hide_entity: true
+  trigger:
+    - platform: homeassistant
+      event: start
+  condition:
+    - condition: state
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+      state: 'on'
+    - condition: state
+      entity_id: switch.orvibo_wifi_socket
+      state: 'on'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.all_purifiers
+
+- alias: "All purifiers light state update: on"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+      to: 'on'
+    - platform: state
+      entity_id: switch.orvibo_wifi_socket
+      to: 'on'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.all_purifiers
+
+- alias: "All purifiers state update: off"
+  hide_entity: true
+  trigger: # not very good triggers
+    - platform: state
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+      to: 'off'
+    - platform: state
+      entity_id: switch.orvibo_wifi_socket 
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+      state: 'off'
+    - condition: state
+      entity_id: switch.orvibo_wifi_socket
+      state: 'off'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.all_purifiers
+
+- alias: "All purifiers control: on"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.all_purifiers 
+      to: 'on'
+  action:
+    - service: fan.turn_on
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+    - service: switch.turn_on
+      entity_id: switch.orvibo_wifi_socket
+
+- alias: "All purifiers control: off"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.all_purifiers 
+      to: 'off'
+  action:
+    - service: fan.turn_off
+      entity_id: fan.purifier_xiaomi_air_purifier_2
+    - service: switch.turn_off
+      entity_id: switch.orvibo_wifi_socket
+# end: All purifiers contrl
 
 # end: AQI
 ################################################################
@@ -1245,84 +1342,6 @@
 # end: Orvibo WiFi Socket contrl
 ################################################################
 
-################################################################
-# begin: All purifiers contrl
-- alias: "All purifiers state update: start up on"
-  hide_entity: true
-  trigger:
-    - platform: homeassistant
-      event: start
-  condition:
-    - condition: state
-      entity_id: fan.purifier_xiaomi_air_purifier_2
-      state: 'on'
-    - condition: state
-      entity_id: switch.orvibo_wifi_socket
-      state: 'on'
-  action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.all_purifiers
-
-- alias: "All purifiers light state update: on"
-  hide_entity: true
-  trigger:
-    - platform: state
-      entity_id: fan.purifier_xiaomi_air_purifier_2
-      to: 'on'
-    - platform: state
-      entity_id: switch.orvibo_wifi_socket
-      to: 'on'
-  action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.all_purifiers
-
-- alias: "All purifiers state update: off"
-  hide_entity: true
-  trigger: # not very good triggers
-    - platform: state
-      entity_id: fan.purifier_xiaomi_air_purifier_2
-      to: 'off'
-    - platform: state
-      entity_id: switch.orvibo_wifi_socket 
-      to: 'off'
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      entity_id: fan.purifier_xiaomi_air_purifier_2
-      state: 'off'
-    - condition: state
-      entity_id: switch.orvibo_wifi_socket
-      state: 'off'
-  action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.all_purifiers
-
-- alias: "All purifiers control: on"
-  hide_entity: true
-  trigger:
-    - platform: state
-      entity_id: input_boolean.all_purifiers 
-      to: 'on'
-  action:
-    - service: fan.turn_on
-      entity_id: fan.purifier_xiaomi_air_purifier_2
-    - service: switch.turn_on
-      entity_id: switch.orvibo_wifi_socket
-
-- alias: "All purifiers control: off"
-  hide_entity: true
-  trigger:
-    - platform: state
-      entity_id: input_boolean.all_purifiers 
-      to: 'off'
-  action:
-    - service: fan.turn_off
-      entity_id: fan.purifier_xiaomi_air_purifier_2
-    - service: switch.turn_off
-      entity_id: switch.orvibo_wifi_socket
-# end: All purifiers contrl
-################################################################
 
 ################################################################
 # test begin
