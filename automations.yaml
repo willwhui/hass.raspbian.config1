@@ -21,7 +21,7 @@
     at: '05:00:00'
   action:
     service: switch.turn_off
-    entity_id: switch.modem_xiaomi_mi_wifi_socket_basic
+    entity_id: switch.modem
 - alias: 'Daily modem power daily on'
   hide_entity: true
   trigger:
@@ -29,7 +29,7 @@
     at: '05:15:00'
   action:
     service: switch.turn_on
-    entity_id: switch.modem_xiaomi_mi_wifi_socket_basic
+    entity_id: switch.modem
 # end
 ################################################################
 
@@ -987,23 +987,29 @@
       event: start
   condition:
     - condition: state
-      entity_id: fan.purifier_xiaomi_air_purifier_2
+      entity_id: fan.purifier_1
       state: 'on'
     - condition: state
-      entity_id: switch.orvibo_wifi_socket
+      entity_id: fan.purifier_2
+      state: 'on'
+    - condition: state
+      entity_id: switch.switch_orange
       state: 'on'
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.all_purifiers
 
-- alias: "All purifiers light state update: on"
+- alias: "All purifiers state update: on"
   hide_entity: true
   trigger:
     - platform: state
-      entity_id: fan.purifier_xiaomi_air_purifier_2
+      entity_id: fan.purifier_1
       to: 'on'
     - platform: state
-      entity_id: switch.orvibo_wifi_socket
+      entity_id: fan.purifier_2
+      to: 'on'
+    - platform: state
+      entity_id: switch.switch_orange
       to: 'on'
   action:
     - service: input_boolean.turn_on
@@ -1013,19 +1019,25 @@
   hide_entity: true
   trigger: # not very good triggers
     - platform: state
-      entity_id: fan.purifier_xiaomi_air_purifier_2
+      entity_id: fan.purifier_1
       to: 'off'
     - platform: state
-      entity_id: switch.orvibo_wifi_socket 
+      entity_id: fan.purifier_2
+      to: 'off'
+    - platform: state
+      entity_id: switch.switch_orange 
       to: 'off'
   condition:
     condition: and
     conditions:
     - condition: state
-      entity_id: fan.purifier_xiaomi_air_purifier_2
+      entity_id: fan.purifier_1
       state: 'off'
     - condition: state
-      entity_id: switch.orvibo_wifi_socket
+      entity_id: fan.purifier_2
+      state: 'off'
+    - condition: state
+      entity_id: switch.switch_orange
       state: 'off'
   action:
     - service: input_boolean.turn_off
@@ -1039,9 +1051,11 @@
       to: 'on'
   action:
     - service: fan.turn_on
-      entity_id: fan.purifier_xiaomi_air_purifier_2
+      entity_id: fan.purifier_1
+    - service: fan.turn_on
+      entity_id: fan.purifier_2
     - service: switch.turn_on
-      entity_id: switch.orvibo_wifi_socket
+      entity_id: switch.switch_orange
 
 - alias: "All purifiers control: off"
   hide_entity: true
@@ -1051,9 +1065,11 @@
       to: 'off'
   action:
     - service: fan.turn_off
-      entity_id: fan.purifier_xiaomi_air_purifier_2
+      entity_id: fan.purifier_1
+    - service: fan.turn_off
+      entity_id: fan.purifier_2
     - service: switch.turn_off
-      entity_id: switch.orvibo_wifi_socket
+      entity_id: switch.switch_orange
 # end: All purifiers contrl
 
 # end: AQI
@@ -1270,78 +1286,6 @@
 
 # end: Small bedroom light contrl
 ################################################################
-
-
-################################################################
-# begin: Orvibo WiFi Socket contrl
-- alias: "Orvibo WiFi Socket state update: start up on"
-  hide_entity: true
-  trigger:
-    - platform: homeassistant
-      event: start
-  condition:
-    - condition: state
-      entity_id: switch.orvibo_wifi_socket
-      state: 'on'
-  action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.switch_orange
-
-- alias: "Orvibo WiFi Socket state update: start up off"
-  hide_entity: true
-  trigger:
-    - platform: homeassistant
-      event: start
-  condition:
-    - condition: state
-      entity_id: switch.orvibo_wifi_socket
-      state: 'off'
-  action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.switch_orange
-
-- alias: "Orvibo WiFi Socket light state update: on"
-  hide_entity: true
-  trigger:
-    - platform: state
-      entity_id: switch.orvibo_wifi_socket
-      to: 'on'
-  action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.switch_orange
-
-- alias: "Orvibo WiFi Socket state update: off"
-  hide_entity: true
-  trigger:
-    - platform: state
-      entity_id: switch.orvibo_wifi_socket 
-      to: 'off'
-  action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.switch_orange
-
-- alias: "Orvibo WiFi Socket control: on"
-  hide_entity: true
-  trigger:
-    - platform: state
-      entity_id: input_boolean.switch_orange 
-      to: 'on'
-  action:
-    - service: switch.turn_on
-      entity_id: switch.orvibo_wifi_socket
-
-- alias: "Orvibo WiFi Socket control: off"
-  hide_entity: true
-  trigger:
-    - platform: state
-      entity_id: input_boolean.switch_orange 
-      to: 'off'
-  action:
-    - service: switch.turn_off
-      entity_id: switch.orvibo_wifi_socket
-# end: Orvibo WiFi Socket contrl
-################################################################
-
 
 ################################################################
 # test begin

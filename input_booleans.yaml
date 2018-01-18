@@ -28,11 +28,6 @@ light2:
   initial: off
   icon: mdi:lightbulb-outline
 
-switch_orange:
-  name: "Switch Orange"
-  initial: off
-  icon: mdi:flash
-
 all_purifiers:
   name: "All Purifiers"
   initial: off

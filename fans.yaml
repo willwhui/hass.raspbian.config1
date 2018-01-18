@@ -1,5 +1,10 @@
 - platform: xiaomi_miio
-  name: "Purifier (Xiaomi Air Purifier 2)"
-  host: !secret xiaomi_air_purifier_2_ip
-  token: !secret xiaomi_air_purifier_2_token
+  name: "Purifier 1"
+  host: !secret xiaomi_air_purifier_2_1_ip
+  token: !secret xiaomi_air_purifier_2_1_token
   # emulated_hue_name: "Purifier"  # no need 
+
+- platform: xiaomi_miio
+  name: "Purifier 2"
+  host: !secret xiaomi_air_purifier_2_2_ip
+  token: !secret xiaomi_air_purifier_2_2_token
