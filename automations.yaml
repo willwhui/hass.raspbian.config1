@@ -1304,7 +1304,6 @@
       entity_id: !secret wireless_button_2_id
       click_type: double
   action:
-    - service: shell_command.set_restart_hass_flag
     - service: light.turn_on # blink
       entity_id: !secret xiaomi_gateway_light_id
     - delay: "00:00:01"
@@ -1322,6 +1321,7 @@
     - delay: "00:00:01"
     - service: light.turn_off
       entity_id: !secret xiaomi_gateway_light_id
+    - service: shell_command.set_restart_hass_flag
 
 - alias: "Restart hass: remove flag after restarting"
   #hide_entity: true
