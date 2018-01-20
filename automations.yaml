@@ -1305,6 +1305,23 @@
       click_type: double
   action:
     - service: shell_command.set_restart_hass_flag
+    - service: light.turn_on # blink
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
 
 - alias: "Restart hass: remove flag after restarting"
   #hide_entity: true
@@ -1328,7 +1345,7 @@
       click_type: hold
   action:
     - service: shell_command.set_restart_openvpn_flag
-    - service: light.turn_on
+    - service: light.turn_on # blink
       entity_id: !secret xiaomi_gateway_light_id
     - delay: "00:00:01"
     - service: light.turn_off
