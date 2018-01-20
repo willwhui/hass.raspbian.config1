@@ -12,3 +12,4 @@ known_devices.yaml
 *.db-shm
 *.db-wal
 *.tmp
+flags

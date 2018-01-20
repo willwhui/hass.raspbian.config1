@@ -14,14 +14,17 @@
 
 ################################################################
 # begin
-- alias: 'Daily modem power daily off'
+- alias: 'Daily modem power daily off on'
   hide_entity: true
   trigger:
     platform: time
     at: '05:00:00'
   action:
-    service: switch.turn_off
-    entity_id: switch.modem
+    - service: switch.turn_off
+      entity_id: switch.modem
+    - delay: '00:15:00'
+    - service: switch.turn_on
+      entity_id: switch.modem
 - alias: 'Daily modem power daily on'
   hide_entity: true
   trigger:
@@ -426,6 +429,7 @@
 ################################################################
 # begin: fade light on in morning
 - alias: "Fade light on in working days morning (start)"
+  initial_state: false # disable
   hide_entity: true
   trigger:
       platform: time
@@ -1288,27 +1292,43 @@
 ################################################################
 
 ################################################################
+# begin: restart hass
+- alias: "Restart hass: trigger set flag up by button"
+  #hide_entity: true
+  trigger:
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: !secret wireless_button_2_id
+      click_type: double
+  action:
+    - service: shell_command.set_restart_hass_flag
+# end: restart hass
+################################################################
+
+################################################################
 # test begin
 
 - alias: "test on ON"
-  hide_entity: true
+  #hide_entity: true
   trigger:
     - platform: state
       entity_id: input_boolean.test
       to: 'on'
   action:
-    - service: tts.google_say
-      entity_id: !secret current_media_player_id
-      data:
-        message: "A start work timer started!"
-    # - service: xiaomi_aqara.play_ringtone
+    #- service: shell_command.set_restart_hass_flag
+    # - service: tts.google_say
+    #   entity_id: !secret current_media_player_id
     #   data:
-    #     gw_mac: !secret xiaomi_gateway_mac
-    #     ringtone_id: 8
-    #     ringtone_vol: 8
+    #     message: "A start work timer started!"
+    - service: xiaomi_aqara.play_ringtone
+      data:
+        gw_mac: !secret xiaomi_gateway_mac
+        ringtone_id: 8
+        ringtone_vol: 8
 
 - alias: "test on OFF"
-  hide_entity: true
+  #hide_entity: true
   trigger:
     - platform: state
       entity_id: input_boolean.test

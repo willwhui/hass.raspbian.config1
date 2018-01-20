@@ -95,6 +95,7 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 #counter: !include counters.yaml
 input_number: !include input_numbers.yaml
+shell_command: !include shell_commands.yaml
 
 emulated_hue:
   exposed_domains:
