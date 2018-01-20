@@ -1,0 +1,1 @@
+isfound=$(ls /home/homeassistant/.homeassistant/flags | grep "hass-restart.flag" | grep -v "grep"); if [ -z "$isfound" ]; then echo "no hass-restart.flag"; else . /home/pi/check-hass-restart-flag-restart.sh; fi

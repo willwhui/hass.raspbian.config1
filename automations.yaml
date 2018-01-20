@@ -90,7 +90,7 @@
 ################################################################
 # begin : automation for "stop working, take a walk"
 - alias: "Set working timer: trigger set flag up by button"
-  #hide_entity: true
+  hide_entity: true
   trigger:
     platform: event
     event_type: click
@@ -111,7 +111,7 @@
       entity_id: input_boolean.start_work
 
 - alias: "Set working timer: report"
-  #hide_entity: true
+  hide_entity: true
   trigger:
     platform: event
     event_type: click
@@ -135,7 +135,7 @@
           The current timer is started {{states.input_number.start_work_timer.state | int}} minutes ago.
 
 - alias: "Set working timer: trigger put flag down by button"
-  #hide_entity: true
+  hide_entity: true
   trigger:
     platform: event
     event_type: click
@@ -183,7 +183,7 @@
 
 - alias: "Set working timer: trun on"
   initial_state: true
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: state
       entity_id: input_boolean.start_work
@@ -211,7 +211,7 @@
 
 - alias: "Set working timer: resume on start"
   initial_state: true
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: homeassistant
       event: start
@@ -230,7 +230,7 @@
 
 - alias: "Set working timer: time up"
   initial_state: true
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: numeric_state
       entity_id: input_number.start_work_timer
@@ -243,7 +243,7 @@
 
 - alias: "Set working timer: turn off"
   initial_state: true
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: state
       entity_id: input_boolean.start_work
@@ -258,7 +258,7 @@
 
 - alias: "Set working timer: counting"
   initial_state: false
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: time
       minutes: '/1' # every 1 minutes
@@ -269,7 +269,7 @@
 
 - alias: "Set working timer: resuming prompt"
   initial_state: false
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: time
       minutes: '/2' # prompt after 2 minutes resuming (on hass start)
@@ -289,7 +289,7 @@
 # end: Set working timer
 
 - alias: "TTS for take a walk: work event just ended" # triggered by google event
-  #hide_entity: true
+  hide_entity: true
   trigger:
     platform: state
     entity_id: calendar.start_work
@@ -306,7 +306,7 @@
       entity_id: automation.tts_for_take_a_walk_check_signal_to_stop_repeating
 
 - alias: "TTS for take a walk: repeating"
-  #hide_entity: true
+  hide_entity: true
   initial_state: false
   trigger:
       platform: time
@@ -343,7 +343,7 @@
 
 # begin : TTS repeat signal on for x seconds
 - alias: "TTS repeat signal on for x seconds"
-  #hide_entity: true
+  hide_entity: true
   initial_state: false
   trigger:
     - platform: time
@@ -927,6 +927,7 @@
   
 # begin: All purifiers contrl
 - alias: "Turn on all purifiers automation"
+  hide_entity: true
   trigger:
     - platform: time
       at: '23:00:00'
@@ -937,6 +938,7 @@
       entity_id: automation.turn_on_all_purifiers_at_night_automatically_when_aqi_yellow
 
 - alias: "Turn off all purifiers automation"
+  hide_entity: true
   trigger:
     - platform: time
       at: '07:00:00'
@@ -948,7 +950,7 @@
 
 - alias: "Turn on all purifiers at night automatically when AQI Yellow"
   initial_state: false
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: time
       minutes: '/10' # every 10 minutes
@@ -971,7 +973,7 @@
 
 - alias: "Turn off all purifiers at night automatically when AQI Green"
   initial_state: false
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: time
       minutes: '/10' # every 10 minutes
@@ -1307,7 +1309,7 @@
 - alias: "Restart hass: remove flag after restarting"
   #hide_entity: true
   trigger:
-      - platform: homeassistant
+    - platform: homeassistant
       event: start
   action:
     - service: shell_command.remove_restart_hass_flag
@@ -1315,10 +1317,50 @@
 ################################################################
 
 ################################################################
+# begin: restart openvpn
+- alias: "Restart openvpn: trigger set flag up by button"
+  #hide_entity: true
+  trigger:
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: !secret wireless_button_2_id
+      click_type: hold
+  action:
+    - service: shell_command.set_restart_openvpn_flag
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+
+- alias: "Restart openvpn: remove flag after restarting"
+  #hide_entity: true
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: shell_command.remove_restart_openvpn_flag
+# end: restart openvpn
+################################################################
+
+################################################################
 # test begin
 
 - alias: "test on ON"
-  #hide_entity: true
+  #hide_entity: true    - service: light.turn_on
   trigger:
     - platform: state
       entity_id: input_boolean.test

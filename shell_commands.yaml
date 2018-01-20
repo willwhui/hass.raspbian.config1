@@ -1,3 +1,5 @@
 # Exposes service shell_command.restart_hass
-set_restart_hass_flag: echo "restart" > ~/.homeassistant/flags/restart.flag
-remove_restart_hass_flag: rm -f ~/.homeassistant/flags/restart.flag
+set_restart_hass_flag: echo "restart" > ~/.homeassistant/flags/hass-restart.flag
+remove_restart_hass_flag: rm -f ~/.homeassistant/flags/hass-restart.flag
+set_restart_openvpn_flag: echo "restart" > ~/.homeassistant/flags/openvpn-restart.flag
+remove_restart_openvpn_flag: rm -f ~/.homeassistant/flags/openvpn-restart.flag

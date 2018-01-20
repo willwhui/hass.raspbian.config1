@@ -1,0 +1,1 @@
+isfound=$(ls /home/homeassistant/.homeassistant/flags | grep "openvpn-restart.flag" | grep -v "grep"); if [ -z "$isfound" ]; then echo "no openvpn-restart.flag"; else . /home/pi/check-hass-openvpn-restart-flag-restart.sh; fi
