@@ -1303,6 +1303,14 @@
       click_type: double
   action:
     - service: shell_command.set_restart_hass_flag
+
+- alias: "Restart hass: remove flag after restarting"
+  #hide_entity: true
+  trigger:
+      - platform: homeassistant
+      event: start
+  action:
+    - service: shell_command.remove_restart_hass_flag
 # end: restart hass
 ################################################################
 

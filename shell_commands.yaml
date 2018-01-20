@@ -1,2 +1,3 @@
 # Exposes service shell_command.restart_hass
 set_restart_hass_flag: echo "restart" > ~/.homeassistant/flags/restart.flag
+remove_restart_hass_flag: rm -f ~/.homeassistant/flags/restart.flag
