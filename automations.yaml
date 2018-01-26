@@ -21,18 +21,10 @@
     at: '05:00:00'
   action:
     - service: switch.turn_off
-      entity_id: switch.modem
+      entity_id: switch.switch_orange
     - delay: '00:15:00'
     - service: switch.turn_on
-      entity_id: switch.modem
-- alias: 'Daily modem power daily on'
-  hide_entity: true
-  trigger:
-    platform: time
-    at: '05:15:00'
-  action:
-    service: switch.turn_on
-    entity_id: switch.modem
+      entity_id: switch.switch_orange
 # end
 ################################################################
 
@@ -133,53 +125,6 @@
       data_template: # only prompt when counting
         message: >
           The current timer is started {{states.input_number.start_work_timer.state | int}} minutes ago.
-
-- alias: "Set working timer: trigger put flag down by button"
-  hide_entity: true
-  trigger:
-    platform: event
-    event_type: click
-    event_data:
-      entity_id: !secret wireless_button_2_id
-      click_type: double
-  condition:
-    condition: and
-    conditions:
-    - condition: numeric_state
-      entity_id: input_number.start_work_timer
-      above: 0 # greater than 0 means there is a working timer now
-    - condition: state
-      entity_id: automation.tts_for_take_a_walk_repeating
-      state: 'off' # only set a timer while there is not a repeating tts current
-  action:
-    - service: input_boolean.turn_off # set flag up
-      entity_id: input_boolean.start_work
-    - service: tts.google_say
-      entity_id: !secret current_media_player_id
-      data_template: # only prompt when counting
-        message: >
-          The current timer is canceled.
-
-# motion trigger is not practically useful
-# - alias: "Set working timer: trigger set flag up by motion"
-#   #hide_entity: true
-#   trigger:
-#     - platform: event
-#       event_type: motion
-#       event_data:
-#         entity_id: !secret motion_sensor_1_id
-#   condition:
-#     condition: and
-#     conditions:
-#     - condition: numeric_state
-#       entity_id: input_number.start_work_timer
-#       below: 1 # less than 1 means no working timer now
-#     - condition: state
-#       entity_id: automation.tts_for_take_a_walk_repeating
-#       state: 'off' # only set a timer while there is not a repeating tts current
-#   action:
-#     - service: input_boolean.turn_on # set flag up
-#       entity_id: input_boolean.start_work
 
 - alias: "Set working timer: trun on"
   initial_state: true
@@ -365,7 +310,7 @@
 ################################################################
 # begin: fill water can before go to school
 - alias: "TTS for fill water can: timer rule"
-  initial_state: false
+  initial_state: true
   hide_entity: true
   trigger:
       platform: time
@@ -487,7 +432,7 @@
       entity_id: automation.tts_for_take_medicine_check_signal_to_stop_repeating
 
 - alias: "TTS for take medicine:  enable motion rule again"
-  initial_state: false
+  initial_state: true
   #hide_entity: true
   trigger:
       platform: time
@@ -501,7 +446,7 @@
 ################################################################
 # begin: fade light on in morning
 - alias: "Fade light on in working days morning (start)"
-  initial_state: false # disable
+  initial_state: true
   hide_entity: true
   trigger:
       platform: time
@@ -514,7 +459,7 @@
       - wed
       - thu
       - fri
-      # - sat
+      - sat
       # - sun
   action:
     - service: light.turn_on
@@ -1071,7 +1016,7 @@
       entity_id: fan.purifier_2
       state: 'on'
     - condition: state
-      entity_id: switch.switch_orange
+      entity_id: switch.mi_1
       state: 'on'
   action:
     - service: input_boolean.turn_on
@@ -1087,7 +1032,7 @@
       entity_id: fan.purifier_2
       to: 'on'
     - platform: state
-      entity_id: switch.switch_orange
+      entity_id: switch.mi_1
       to: 'on'
   action:
     - service: input_boolean.turn_on
@@ -1103,7 +1048,7 @@
       entity_id: fan.purifier_2
       to: 'off'
     - platform: state
-      entity_id: switch.switch_orange 
+      entity_id: switch.mi_1 
       to: 'off'
   condition:
     condition: and
@@ -1115,7 +1060,7 @@
       entity_id: fan.purifier_2
       state: 'off'
     - condition: state
-      entity_id: switch.switch_orange
+      entity_id: switch.mi_1
       state: 'off'
   action:
     - service: input_boolean.turn_off
@@ -1135,7 +1080,7 @@
       entity_id: fan.purifier_2
     - delay: "00:00:01"
     - service: switch.turn_on
-      entity_id: switch.switch_orange
+      entity_id: switch.mi_1
 
 - alias: "All purifiers control: off"
   hide_entity: true
@@ -1151,7 +1096,7 @@
       entity_id: fan.purifier_2
     - delay: "00:00:01"
     - service: switch.turn_off
-      entity_id: switch.switch_orange
+      entity_id: switch.mi_1
 # end: All purifiers contrl
 
 # end: AQI

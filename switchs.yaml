@@ -7,7 +7,7 @@
   # emulated_hue_name: "orange" # no need 
 
 - platform: xiaomi_miio
-  name: "Modem"
+  name: "mi 1"
   host: !secret xiaomi_wifi_socket_basic_ip
   token: !secret xiaomi_wifi_socket_basic_token
   # emulated_hue_name: "modem"  # no need 

@@ -5,5 +5,5 @@ start_work_timer:
   # without this setting, hass will reload the last value it was, or set to '0' if it is the very first time initializing for it
   # initial: 0
   min: 0
-  max: 100
+  max: 50
   step: 1

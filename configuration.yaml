@@ -83,6 +83,7 @@ tts:
   - platform: google
 
 google:
+  # google calendar
   client_id: !secret google_calendar_oauth_hass_client_1_id
   client_secret: !secret google_calendar_oauth_hass_client_1_secret
 
