@@ -120,6 +120,8 @@
       entity_id: automation.tts_for_take_a_walk_repeating
       state: 'off' # only set a timer while there is not a repeating tts current
   action:
+    - service: automation.turn_on
+      entity_id: automation.gateway_light_blink
     - service: tts.google_say
       entity_id: !secret current_media_player_id
       data_template: # only prompt when counting
@@ -149,6 +151,8 @@
         value: 1 # inital start value
     - service: automation.turn_on # start counting
       entity_id: automation.set_working_timer_counting
+    - service: automation.turn_on
+      entity_id: automation.gateway_light_blink
     - service: tts.google_say
       entity_id: !secret current_media_player_id
       data:
@@ -165,13 +169,14 @@
     entity_id: input_number.start_work_timer
     above: 0 # greater than 0 means it is a time need to resume
   action:
+    - service: automation.turn_on
+      entity_id: automation.gateway_light_blink
     - service: input_boolean.turn_on # set flag up
       entity_id: input_boolean.start_work
     - service: automation.turn_on # resuming by start counting
       entity_id: automation.set_working_timer_counting
     - service: automation.turn_on # prompt
       entity_id: automation.set_working_timer_resuming_prompt
-
 
 - alias: "Set working timer: time up"
   initial_state: true
@@ -240,10 +245,10 @@
     entity_id: calendar.start_work
     to: 'off' # work event ended
   action:
-    - service: automation.turn_on # turn on a timer drived rule for tts
-      entity_id: automation.tts_for_take_a_walk_repeating
     - service: light.turn_on # turn on the TTS signal
       entity_id: !secret xiaomi_gateway_light_id
+    - service: automation.turn_on # turn on a timer drived rule for tts
+      entity_id: automation.tts_for_take_a_walk_repeating
     - delay: "00:00:15" # left some time for signal on
     - service: automation.turn_on # start rule for turn off signal in next x seconds then turn off itself
       entity_id: automation.tts_repeat_signal_on_for_x_seconds
@@ -294,7 +299,7 @@
     - platform: time
       minutes: '/10' # turn off signal for x minutes
       seconds: 00
-    - platform: state
+    - platform: state # or the signal is turned off
       entity_id: !secret xiaomi_gateway_light_id
       to: 'off'
   action:
@@ -305,6 +310,70 @@
 # end : TTS repeat signal on for x seconds
 
 # end: automation for "stop working, take a walk"
+################################################################
+
+################################################################
+# begin: blink 
+- alias: "Gateway light blink"
+  initial_state: false
+  hide_entity: true
+  trigger:
+    - platform: time
+      seconds: '/1' # blink after trggered 1 second 
+  action:
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - service: automation.turn_off # stop self
+      entity_id: automation.gateway_light_blink
+
+- alias: "Gateway light blink 2"
+  initial_state: false
+  hide_entity: true
+  trigger:
+    - platform: time
+      seconds: '/1' # blink after trggered 1 second 
+  action:
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_on
+      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:01"
+    - service: light.turn_off
+      entity_id: !secret xiaomi_gateway_light_id
+    - service: automation.turn_off # stop self
+      entity_id: automation.gateway_light_blink_2
+# end: blink 
 ################################################################
 
 ################################################################
@@ -324,10 +393,10 @@
       - thu
       - fri
   action:
-    - service: automation.turn_on # turn on a timer drived rule
-      entity_id: automation.tts_for_fill_water_can_repeating
     - service: light.turn_on # turn on the TTS signal
       entity_id: !secret xiaomi_gateway_light_id
+    - service: automation.turn_on # turn on a timer drived rule
+      entity_id: automation.tts_for_fill_water_can_repeating
     - service: automation.turn_on # start rule for turn off signal in next x seconds
       entity_id: automation.tts_repeat_signal_on_for_x_seconds
     - delay: "00:00:15" # left some time for signal on
@@ -383,10 +452,10 @@
       event_data:
         entity_id: !secret motion_sensor_1_id
   action:
-    - service: automation.turn_on # turn on a timer drived rule
-      entity_id: automation.tts_for_take_medicine_repeating
     - service: light.turn_on # turn on the TTS signal
       entity_id: !secret xiaomi_gateway_light_id
+    - service: automation.turn_on # turn on a timer drived rule
+      entity_id: automation.tts_for_take_medicine_repeating
     - service: automation.turn_on # start rule for turn off signal in next x seconds
       entity_id: automation.tts_repeat_signal_on_for_x_seconds
     - delay: "00:00:15" # left some time for signal on
@@ -753,7 +822,7 @@
 #   ERROR (MainThread) [homeassistant.core] Invalid service data for light.turn_on: None for dictionary value @ data['rgb_color']. Got '[128, 0, 128]'
 # split to several rules
 - alias: "Light on Air Quality Index: brown"
-  hide_entity: true
+  #hide_entity: true
   trigger:
     - platform: state
       entity_id: input_boolean.aqi_checker 
@@ -770,7 +839,8 @@
     - service: light.turn_on
       entity_id: !secret xiaomi_gateway_light_id
       data:
-        rgb_color: [165,42,42]
+        #rgb_color: [165,42,42] real brown, device doesn't support
+        rgb_color: [67,0,255] # kind of purple
 
 - alias: "Light on Air Quality Index: purple"
   hide_entity: true
@@ -910,33 +980,9 @@
       entity_id: input_boolean.aqi 
       to: 'on'
   action:
-    - delay: "00:00:03" # left some time for the light respones the color setting action
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
+    - delay: "00:00:03" # waiting for the color and brightness rulse applied first
+    - service: automation.turn_on
+      entity_id: automation.gateway_light_blink
     - service: input_boolean.turn_off
       entity_id: input_boolean.aqi_checker
     - service: input_boolean.turn_off
@@ -1075,10 +1121,8 @@
   action:
     - service: fan.turn_on
       entity_id: fan.purifier_1
-    - delay: "00:00:01"
     - service: fan.turn_on
       entity_id: fan.purifier_2
-    - delay: "00:00:01"
     - service: switch.turn_on
       entity_id: switch.mi_1
 
@@ -1091,10 +1135,8 @@
   action:
     - service: fan.turn_off
       entity_id: fan.purifier_1
-    - delay: "00:00:01"
     - service: fan.turn_off
       entity_id: fan.purifier_2
-    - delay: "00:00:01"
     - service: switch.turn_off
       entity_id: switch.mi_1
 # end: All purifiers contrl
@@ -1325,23 +1367,9 @@
       entity_id: !secret wireless_button_2_id
       click_type: double
   action:
-    - service: light.turn_on # blink
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
+    - service: automation.turn_on
+      entity_id: automation.gateway_light_blink_2
+    - delay: "00:00:05" # give blink rule enough time to finish job
     - service: shell_command.set_restart_hass_flag
 
 - alias: "Restart hass: remove flag after restarting"
@@ -1365,24 +1393,9 @@
       entity_id: !secret wireless_button_2_id
       click_type: hold
   action:
+    - service: automation.turn_on
+      entity_id: automation.gateway_light_blink
     - service: shell_command.set_restart_openvpn_flag
-    - service: light.turn_on # blink
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_on
-      entity_id: !secret xiaomi_gateway_light_id
-    - delay: "00:00:01"
-    - service: light.turn_off
-      entity_id: !secret xiaomi_gateway_light_id
 
 - alias: "Restart openvpn: remove flag after restarting"
   #hide_entity: true
