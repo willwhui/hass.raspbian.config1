@@ -82,10 +82,10 @@ timer: !include timers.yaml
 tts:
   - platform: google
 
-google:
-  # google calendar
-  # client_id: !secret google_calendar_oauth_hass_client_1_id
-  # client_secret: !secret google_calendar_oauth_hass_client_1_secret
+# google calendar
+# google:
+#   client_id: !secret google_calendar_oauth_hass_client_1_id
+#   client_secret: !secret google_calendar_oauth_hass_client_1_secret
 
 xiaomi_aqara: !include xiaomi_aqaras.yaml
 media_player: !include media_players.yaml

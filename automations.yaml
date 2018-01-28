@@ -32,7 +32,7 @@
   hide_entity: true
   trigger:
     platform: state
-    entity_id: vacuum.cleaner_xiaomi_cleaner_robot
+    entity_id: vacuum.cleaner
     from: 'on'
     to: 'off'
   action:
@@ -475,14 +475,6 @@
       entity_id: !secret current_media_player_id
       data:
         message: "It is time to take the medicine, My lady."
-    - delay: "00:00:5" # left some time for tts
-    - service: tts.google_say
-      entity_id: !secret current_media_player_id
-      data:
-        # message: "Time to take a walk, human!"
-        message: "楼主，该吃药了！"
-        language: "zh"
-    - delay: "00:00:5" # left some time for tts
 
 - alias: "TTS for take medicine: check signal to stop repeating"
   #hide_entity: true
@@ -529,7 +521,7 @@
       - thu
       - fri
       - sat
-      # - sun
+      - sun
   action:
     - service: light.turn_on
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
@@ -1121,8 +1113,10 @@
   action:
     - service: fan.turn_on
       entity_id: fan.purifier_1
+    - delay: "00:00:02" # seemed won't work properly without delay... need confirm
     - service: fan.turn_on
       entity_id: fan.purifier_2
+    - delay: "00:00:02" # seemed won't work properly without delay... need confirm
     - service: switch.turn_on
       entity_id: switch.mi_1
 
@@ -1135,8 +1129,10 @@
   action:
     - service: fan.turn_off
       entity_id: fan.purifier_1
+    - delay: "00:00:02" # seemed won't work properly without delay... need confirm
     - service: fan.turn_off
       entity_id: fan.purifier_2
+    - delay: "00:00:02" # seemed won't work properly without delay... need confirm
     - service: switch.turn_off
       entity_id: switch.mi_1
 # end: All purifiers contrl
