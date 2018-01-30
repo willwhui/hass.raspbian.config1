@@ -18,7 +18,7 @@
   hide_entity: true
   trigger:
     platform: time
-    at: '05:00:00'
+    at: !secret time_restart_modem
   action:
     - service: switch.turn_off
       entity_id: switch.switch_orange
@@ -379,11 +379,11 @@
 ################################################################
 # begin: fill water can before go to school
 - alias: "TTS for fill water can: timer rule"
-  initial_state: true
+  initial_state: false
   hide_entity: true
   trigger:
       platform: time
-      at: '07:05:00'
+      at: !secret time_fill_water_can
   condition:
     condition: time
     weekday:
@@ -445,7 +445,7 @@
 # begin: take medicine every moring
 - alias: "TTS for take medicine: motion rule"
   initial_state: false
-  #hide_entity: true
+  hide_entity: true
   trigger:
       platform: event
       event_type: motion
@@ -465,7 +465,7 @@
       entity_id: automation.tts_for_take_medicine_motion_rule
 
 - alias: "TTS for take medicine: repeating"
-  #hide_entity: true
+  hide_entity: true
   initial_state: false
   trigger:
       platform: time
@@ -477,7 +477,7 @@
         message: "It is time to take the medicine, My lady."
 
 - alias: "TTS for take medicine: check signal to stop repeating"
-  #hide_entity: true
+  hide_entity: true
   initial_state: false
   trigger:
       platform: time
@@ -494,10 +494,10 @@
 
 - alias: "TTS for take medicine:  enable motion rule again"
   initial_state: true
-  #hide_entity: true
+  hide_entity: true
   trigger:
       platform: time
-      at: '05:00:00'
+      at: !secret time_medicine_enable_again
   action:
     - service: automation.turn_on # turn on everyday moring
       entity_id: automation.tts_for_take_medicine_motion_rule
@@ -511,7 +511,7 @@
   hide_entity: true
   trigger:
       platform: time
-      at: '06:20:00'
+      at: !secret time_light_fade_in
   condition:
     condition: time
     weekday:
@@ -814,7 +814,7 @@
 #   ERROR (MainThread) [homeassistant.core] Invalid service data for light.turn_on: None for dictionary value @ data['rgb_color']. Got '[128, 0, 128]'
 # split to several rules
 - alias: "Light on Air Quality Index: brown"
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: state
       entity_id: input_boolean.aqi_checker 
@@ -985,7 +985,7 @@
   hide_entity: true
   trigger:
     - platform: time
-      at: '23:00:00'
+      at: !secret time_furifiers_auto_rule_start
   action:
     - service: automation.turn_on
       entity_id: automation.turn_off_all_purifiers_at_night_automatically_when_aqi_green
@@ -996,7 +996,7 @@
   hide_entity: true
   trigger:
     - platform: time
-      at: '07:00:00'
+      at: !secret time_furifiers_auto_rule_end
   action:
     - service: automation.turn_off
       entity_id: automation.turn_off_all_purifiers_at_night_automatically_when_aqi_green
@@ -1354,8 +1354,19 @@
 
 ################################################################
 # begin: restart hass
+- alias: "Restart hass: every day morning"
+  hide_entity: true
+  trigger:
+    platform: time
+    at: !secret time_hass_restart
+  action:
+    - service: automation.turn_on
+      entity_id: automation.gateway_light_blink_2
+    - delay: "00:00:05" # give blink rule enough time to finish job
+    - service: shell_command.set_restart_hass_flag
+
 - alias: "Restart hass: trigger set flag up by button"
-  #hide_entity: true
+  hide_entity: true
   trigger:
     platform: event
     event_type: click
@@ -1369,7 +1380,7 @@
     - service: shell_command.set_restart_hass_flag
 
 - alias: "Restart hass: remove flag after restarting"
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: homeassistant
       event: start
@@ -1381,7 +1392,7 @@
 ################################################################
 # begin: restart openvpn
 - alias: "Restart openvpn: trigger set flag up by button"
-  #hide_entity: true
+  hide_entity: true
   trigger:
     platform: event
     event_type: click
@@ -1394,7 +1405,7 @@
     - service: shell_command.set_restart_openvpn_flag
 
 - alias: "Restart openvpn: remove flag after restarting"
-  #hide_entity: true
+  hide_entity: true
   trigger:
     - platform: homeassistant
       event: start
