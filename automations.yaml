@@ -736,9 +736,14 @@
       entity_id: !secret magic_cube_id
       action_type: rotate
   condition:
-    condition: state
-    entity_id: timer.flag_small_bedroom_light_activated
-    state: 'active' # repeat if signal is on
+    condition: and # change brightness when other device are idle
+    conditions:
+      - condition: state
+        entity_id: timer.flag_living_room_light_activated
+        state: 'idle'
+      - condition: state
+        entity_id: timer.flag_google_home_tts_activated
+        state: 'idle'
   action:
     - service: light.turn_on
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
