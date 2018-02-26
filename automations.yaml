@@ -379,7 +379,7 @@
 ################################################################
 # begin: fill water can before go to school
 - alias: "TTS for fill water can: timer rule"
-  initial_state: false
+  #initial_state: false
   hide_entity: true
   trigger:
       platform: time
@@ -538,7 +538,7 @@
   hide_entity: true
   trigger:
       platform: time
-      seconds: '/12' # every x seconds, 1 second is too short for light to response
+      seconds: '/30' # every x seconds, 1 second is too short for light to response
   action:
     - service: light.turn_on
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
