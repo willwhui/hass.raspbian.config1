@@ -37,3 +37,8 @@ start_work:
   name: "Work"
   initial: off
   icon: mdi:worker
+
+restart_vpn:
+  name: "Restart vpn"
+  initial: off
+  icon: mdi:account-network

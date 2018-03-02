@@ -1405,9 +1405,22 @@
       entity_id: !secret wireless_button_2_id
       click_type: hold
   action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.restart_vpn
+
+- alias: "Restart openvpn: trigger set flag up by input_boolean"
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.restart_vpn
+      to: 'on'
+  action:
     - service: automation.turn_on
       entity_id: automation.gateway_light_blink
     - service: shell_command.set_restart_openvpn_flag
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.restart_vpn
+
 
 - alias: "Restart openvpn: remove flag after restarting"
   hide_entity: true
@@ -1416,6 +1429,7 @@
       event: start
   action:
     - service: shell_command.remove_restart_openvpn_flag
+
 # end: restart openvpn
 ################################################################
 
