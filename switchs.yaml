@@ -1,9 +1,12 @@
 - platform: orvibo
   discovery: false
   switches:
-    - host: !secret orvibo_wifi_socket_ip
-      mac:  !secret orvibo_wifi_socket_mac
+    - host: !secret orvibo_wifi_socket_s20_ip
+      mac:  !secret orvibo_wifi_socket_s20_mac
       name: "Switch Orange"
+    # - host: !secret orvibo_wifi_socket_s20c_ip hass doesn't support s20c
+    #   mac:  !secret orvibo_wifi_socket_s20c_mac
+    #   name: "Switch Orange2"
   # emulated_hue_name: "orange" # no need 
 
 - platform: xiaomi_miio

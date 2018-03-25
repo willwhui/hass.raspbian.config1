@@ -383,7 +383,7 @@
   hide_entity: true
   trigger:
       platform: time
-      at: !secret time_fill_water_can
+      at: !secret time_take_ryans_stuff
   condition:
     condition: time
     weekday:
@@ -408,18 +408,18 @@
   initial_state: false
   trigger:
       platform: time
-      seconds: '/10' # every x seconds, shouldn't too short for the light and TTS to response
+      seconds: '/20' # every x seconds, shouldn't too short for the light and TTS to response
   action:
     - service: tts.google_say
       entity_id: !secret current_media_player_id
       data:
-        message: "Hey Dad, remember to fill the water can."
-    - delay: "00:00:5" # left some time for tts
+        message: !secret message_take_ryans_stuff
+    - delay: "00:00:7" # left some time for tts
     - service: tts.google_say
       entity_id: !secret current_media_player_id
       data:
         # message: "Time to take a walk, human!"
-        message: "嗨，老爸，记得给水壶里装上水！"
+        message: !secret message_take_ryans_stuff_zh
         language: "zh"
     - delay: "00:00:5" # left some time for tts
 
@@ -1213,42 +1213,6 @@
     - service: light.turn_off
       entity_id: light.living_room_light_xiaomi_philips_ball
 
-# begin: "Living room light on/off: Wireless button"
-- alias: "Living room light on: Wireless Button"
-  hide_entity: true
-  trigger:
-    platform: event
-    event_type: click
-    event_data:
-      entity_id: !secret wireless_button_1_id
-      click_type: single
-  condition:
-    condition: state
-    entity_id: light.living_room_light_xiaomi_philips_ball
-    state: 'off' # if off then on
-  action:
-    - service: light.turn_on
-      entity_id: light.living_room_light_xiaomi_philips_ball
-    - service: timer.start # an X seconds timer, as a signal for next action: rotate
-      entity_id: timer.flag_small_bedroom_light_activated
-
-- alias: "Living room light off: Wireless Button"
-  hide_entity: true
-  trigger:
-    platform: event
-    event_type: click
-    event_data:
-      entity_id: !secret wireless_button_1_id
-      click_type: single
-  condition:
-    condition: state
-    entity_id: light.living_room_light_xiaomi_philips_ball
-    state: 'on' # if on then off
-  action:
-    - service: light.turn_off
-      entity_id: light.living_room_light_xiaomi_philips_ball
-# end: "Living room light on/off: Wireless button"
-
 # end: Living room light contrl
 ################################################################
 
@@ -1320,14 +1284,15 @@
     - service: light.turn_off
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
 
-# begin: "Small bedroom light on/off: Motion Sensor"
-- alias: "Small bedroom light on: Motion Sensor"
+# begin: "Small bedroom light on/off: Wireless button"
+- alias: "Small bedroom light on: Wireless Button"
   hide_entity: true
   trigger:
-    - platform: event
-      event_type: motion
-      event_data:
-        entity_id: !secret motion_sensor_2_id
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: !secret wireless_button_1_id
+      click_type: single
   condition:
     condition: state
     entity_id: light.small_bedroom_light_xiaomi_philips_ball
@@ -1338,13 +1303,14 @@
     - service: timer.start # an X seconds timer, as a signal for next action: rotate
       entity_id: timer.flag_small_bedroom_light_activated
 
-- alias: "Small bedroom light off: Motion Sensor"
+- alias: "Small bedroom light off: Wireless Button"
   hide_entity: true
   trigger:
-    - platform: event
-      event_type: motion
-      event_data:
-        entity_id: !secret motion_sensor_2_id
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: !secret wireless_button_1_id
+      click_type: single
   condition:
     condition: state
     entity_id: light.small_bedroom_light_xiaomi_philips_ball
@@ -1352,7 +1318,41 @@
   action:
     - service: light.turn_off
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
-# end: "Small bedroom light on/off: Motion Sensor"
+# end: "Small bedroom light on/off: Wireless button"
+
+# # begin: "Small bedroom light on/off: Motion Sensor"
+# - alias: "Small bedroom light on: Motion Sensor"
+#   hide_entity: true
+#   trigger:
+#     - platform: event
+#       event_type: motion
+#       event_data:
+#         entity_id: !secret motion_sensor_2_id
+#   condition:
+#     condition: state
+#     entity_id: light.small_bedroom_light_xiaomi_philips_ball
+#     state: 'off' # if off then on
+#   action:
+#     - service: light.turn_on
+#       entity_id: light.small_bedroom_light_xiaomi_philips_ball
+#     - service: timer.start # an X seconds timer, as a signal for next action: rotate
+#       entity_id: timer.flag_small_bedroom_light_activated
+
+# - alias: "Small bedroom light off: Motion Sensor"
+#   hide_entity: true
+#   trigger:
+#     - platform: event
+#       event_type: motion
+#       event_data:
+#         entity_id: !secret motion_sensor_2_id
+#   condition:
+#     condition: state
+#     entity_id: light.small_bedroom_light_xiaomi_philips_ball
+#     state: 'on' # if on then off
+#   action:
+#     - service: light.turn_off
+#       entity_id: light.small_bedroom_light_xiaomi_philips_ball
+# # end: "Small bedroom light on/off: Motion Sensor"
 
 # end: Small bedroom light contrl
 ################################################################
