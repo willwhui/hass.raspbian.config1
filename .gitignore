@@ -9,7 +9,9 @@ tts
 emulated_hue_ids.json
 google_calendars.yaml
 known_devices.yaml
+entity_registry.yaml
 *.db-shm
 *.db-wal
 *.tmp
 flags
+

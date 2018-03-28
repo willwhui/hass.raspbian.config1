@@ -1052,6 +1052,8 @@
     - platform: homeassistant
       event: start
   condition:
+    condition: and
+    conditions:
     - condition: state
       entity_id: fan.purifier_1
       state: 'on'
@@ -1077,6 +1079,18 @@
     - platform: state
       entity_id: switch.mi_1
       to: 'on'
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: fan.purifier_1
+      state: 'on'
+    - condition: state
+      entity_id: fan.purifier_2
+      state: 'on'
+    - condition: state
+      entity_id: switch.mi_1
+      state: 'on'
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.all_purifiers
@@ -1141,6 +1155,19 @@
     - service: switch.turn_off
       entity_id: switch.mi_1
 # end: All purifiers contrl
+
+# # begin: "Living Room Purifier on only: Motion Sensor"
+- alias: "Living Room Purifier on only: Motion Sensor"
+  hide_entity: true
+  trigger:
+    - platform: event
+      event_type: motion
+      event_data:
+        entity_id: !secret motion_sensor_2_id
+  action:
+    - service: switch.turn_on
+      entity_id: switch.mi_1
+# # end: "Living Room Purifier on only: Motion Sensor"
 
 # end: AQI
 ################################################################
