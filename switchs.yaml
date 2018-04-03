@@ -4,16 +4,25 @@
     - host: !secret orvibo_wifi_socket_s20_ip
       mac:  !secret orvibo_wifi_socket_s20_mac
       name: "Switch Orange"
-    # - host: !secret orvibo_wifi_socket_s20c_ip hass doesn't support s20c
-    #   mac:  !secret orvibo_wifi_socket_s20c_mac
-    #   name: "Switch Orange2"
   # emulated_hue_name: "orange" # no need 
+
+# - platform: orvibo
+#   discovery: false
+#   switches:
+#     - host: !secret orvibo_wifi_socket_s20c_ip hass doesn't support s20c
+#       mac:  !secret orvibo_wifi_socket_s20c_mac
+#       name: "Switch Orange2"
 
 - platform: xiaomi_miio
   name: "mi 1"
   host: !secret xiaomi_wifi_socket_basic_ip
   token: !secret xiaomi_wifi_socket_basic_token
   # emulated_hue_name: "modem"  # no need 
+
+- platform: xiaomi_miio
+  name: "mi 2"
+  host: !secret xiaomi_wifi_socket_basic_ip_2
+  token: !secret xiaomi_wifi_socket_basic_token_2
 
 - platform: broadlink
   host: !secret broadlink_rm2_switch_ip
@@ -24,4 +33,8 @@
       friendly_name: "TV"
       command_on: !secret broadlink_rm2_switch_skywort_tv_on_packet
       command_off: !secret broadlink_rm2_switch_skywort_tv_on_packet
+    china_mobile_tv_box:
+      friendly_name: "TV Box"
+      command_on: !secret broadlink_rm2_switch_china_mobile_tv_box_on_packet
+      command_off: !secret broadlink_rm2_switch_china_mobile_tv_box_on_packet
   # emulated_hue_name: "Skyworth"  # no need 

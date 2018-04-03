@@ -15,3 +15,12 @@
     - zhuhai
   stations:
     - zhuhai
+
+- platform: airvisual
+  api_key: !secret airvisual_api_token
+  monitored_conditions:
+    - us
+  latitude: !secret my_latitude
+  longitude: !secret my_longitude
+  radius: 30000
+  show_on_map: false
