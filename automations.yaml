@@ -89,7 +89,29 @@
       entity_id: binary_sensor.skyworth_tv
       to: 'on'
   action:
+    - delay: "00:00:10"
     - service: switch.turn_on
+      entity_id: switch.mi_2
+
+# sometime state trigger fails
+- alias: 'TV Box power on when TV power on: timer check'
+  initial_state: true
+  #hide_entity: true
+  trigger:
+    - platform: time
+      seconds: '/59' # check every x seconds
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.skyworth_tv
+      state: 'on' # tv is realy on
+    - condition: state
+      entity_id: switch.mi_2
+      state: 'off' # but tv box power is off
+  action:
+    - delay: "00:00:10"
+    - service: switch.turn_on # then turn on the tv box's power
       entity_id: switch.mi_2
 
 - alias: 'TV Box power off when TV power off'

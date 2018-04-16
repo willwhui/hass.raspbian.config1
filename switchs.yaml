@@ -31,8 +31,12 @@
   switches:
     skyworth_tv:
       friendly_name: "TV"
-      command_on: !secret broadlink_rm2_switch_skywort_tv_on_packet
-      command_off: !secret broadlink_rm2_switch_skywort_tv_on_packet
+      command_on: !secret broadlink_rm2_switch_skyworth_tv_on_packet
+      command_off: !secret broadlink_rm2_switch_skyworth_tv_on_packet
+    skyworth_tv_mute:
+      friendly_name: "TV Mute"
+      command_on: !secret broadlink_rm2_switch_skyworth_tv_mute
+      command_off: !secret broadlink_rm2_switch_skyworth_tv_mute
     china_mobile_tv_box:
       friendly_name: "TV Box"
       command_on: !secret broadlink_rm2_switch_china_mobile_tv_box_on_packet
