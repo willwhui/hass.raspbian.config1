@@ -132,7 +132,7 @@
   #hide_entity: true
   trigger:
     - platform: time
-      seconds: '/15' # double check after x seconds
+      seconds: '/30' # double check after x seconds
   condition:
     condition: state
     entity_id: binary_sensor.skyworth_tv
@@ -1075,6 +1075,18 @@
     - service: automation.turn_off
       entity_id: automation.turn_on_all_purifiers_at_night_automatically_when_aqi_yellow
 
+- alias: "Turn off some purifiers at morning"
+  hide_entity: true
+  trigger:
+    - platform: time
+      at: !secret time_furifiers_turn_off_at_morning
+  action:
+    - service: fan.turn_off
+      entity_id: fan.purifier_1
+    - delay: "00:00:02" # seemed won't work properly without delay... need confirm
+    - service: switch.turn_off
+      entity_id: switch.mi_1
+
 - alias: "Turn on all purifiers at night automatically when AQI Yellow"
   initial_state: false
   hide_entity: true
@@ -1378,41 +1390,41 @@
     - service: light.turn_off
       entity_id: light.small_bedroom_light_xiaomi_philips_ball
 
-# begin: "Small bedroom light on/off: Wireless button"
-- alias: "Small bedroom light on: Wireless Button"
-  hide_entity: true
-  trigger:
-    platform: event
-    event_type: click
-    event_data:
-      entity_id: !secret wireless_button_1_id
-      click_type: single
-  condition:
-    condition: state
-    entity_id: light.small_bedroom_light_xiaomi_philips_ball
-    state: 'off' # if off then on
-  action:
-    - service: light.turn_on
-      entity_id: light.small_bedroom_light_xiaomi_philips_ball
-    - service: timer.start # an X seconds timer, as a signal for next action: rotate
-      entity_id: timer.flag_small_bedroom_light_activated
+# # begin: "Small bedroom light on/off: Wireless button"
+# - alias: "Small bedroom light on: Wireless Button"
+#   hide_entity: true
+#   trigger:
+#     platform: event
+#     event_type: click
+#     event_data:
+#       entity_id: !secret wireless_button_1_id
+#       click_type: single
+#   condition:
+#     condition: state
+#     entity_id: light.small_bedroom_light_xiaomi_philips_ball
+#     state: 'off' # if off then on
+#   action:
+#     - service: light.turn_on
+#       entity_id: light.small_bedroom_light_xiaomi_philips_ball
+#     - service: timer.start # an X seconds timer, as a signal for next action: rotate
+#       entity_id: timer.flag_small_bedroom_light_activated
 
-- alias: "Small bedroom light off: Wireless Button"
-  hide_entity: true
-  trigger:
-    platform: event
-    event_type: click
-    event_data:
-      entity_id: !secret wireless_button_1_id
-      click_type: single
-  condition:
-    condition: state
-    entity_id: light.small_bedroom_light_xiaomi_philips_ball
-    state: 'on' # if on then off
-  action:
-    - service: light.turn_off
-      entity_id: light.small_bedroom_light_xiaomi_philips_ball
-# end: "Small bedroom light on/off: Wireless button"
+# - alias: "Small bedroom light off: Wireless Button"
+#   hide_entity: true
+#   trigger:
+#     platform: event
+#     event_type: click
+#     event_data:
+#       entity_id: !secret wireless_button_1_id
+#       click_type: single
+#   condition:
+#     condition: state
+#     entity_id: light.small_bedroom_light_xiaomi_philips_ball
+#     state: 'on' # if on then off
+#   action:
+#     - service: light.turn_off
+#       entity_id: light.small_bedroom_light_xiaomi_philips_ball
+# # end: "Small bedroom light on/off: Wireless button"
 
 # # begin: "Small bedroom light on/off: Motion Sensor"
 # - alias: "Small bedroom light on: Motion Sensor"
@@ -1525,6 +1537,52 @@
     - service: shell_command.remove_restart_openvpn_flag
 
 # end: restart openvpn
+################################################################
+
+################################################################
+# begin: "Calling for help"
+- alias: "Calling for help: Wireless Button"
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: !secret wireless_button_1_id
+      click_type: single
+  action:
+    - service: automation.turn_on
+      entity_id: automation.gateway_light_blink
+    - service: tts.google_say
+      entity_id: !secret current_media_player_id
+      data:
+        message: "Hey, Lilibet is calling for your help."
+    - delay: "00:00:10"
+    - service: tts.google_say
+      entity_id: !secret current_media_player_id
+      data:
+        message: "Hey, Lilibet is calling for your help."
+
+- alias: "Calling for help: Wireless Button double click"
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: !secret wireless_button_1_id
+      click_type: double
+  action:
+    - service: automation.turn_on
+      entity_id: automation.gateway_light_blink
+    - service: tts.google_say
+      entity_id: !secret current_media_player_id
+      data:
+        message: "Hey, Lilibet is calling for your help."
+    - delay: "00:00:10"
+    - service: tts.google_say
+      entity_id: !secret current_media_player_id
+      data:
+        message: "Hey, Lilibet is calling for your help."
+# end: "Calling for help"
 ################################################################
 
 ################################################################
