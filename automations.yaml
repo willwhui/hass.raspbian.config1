@@ -121,10 +121,11 @@
       entity_id: binary_sensor.skyworth_tv
       to: 'off'
   action:
+    - delay: "00:00:60" # after x seconds, turn on double check
     - service: automation.turn_on # trun on double check, because sometimes the state is fake
       entity_id: automation.tv_box_power_off_when_tv_power_off_double_check
-    - delay: "00:00:28"
-    - service: automation.turn_off # trun off double check after x seconds, incase of fake state
+    - delay: "00:00:10" # left x seconds for double checking
+    - service: automation.turn_off # trun off double check then
       entity_id: automation.tv_box_power_off_when_tv_power_off_double_check
 
 - alias: 'TV Box power off when TV power off: double check'
@@ -132,7 +133,7 @@
   #hide_entity: true
   trigger:
     - platform: time
-      seconds: '/30' # double check after x seconds
+      seconds: '/3' # double check needs trigger
   condition:
     condition: state
     entity_id: binary_sensor.skyworth_tv
