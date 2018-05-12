@@ -1082,11 +1082,8 @@
     - platform: time
       at: !secret time_furifiers_turn_off_at_morning
   action:
-    - service: fan.turn_off
-      entity_id: fan.purifier_1
-    - delay: "00:00:02" # seemed won't work properly without delay... need confirm
-    - service: switch.turn_off
-      entity_id: switch.mi_1
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.all_purifiers
 
 - alias: "Turn on all purifiers at night automatically when AQI Yellow"
   initial_state: false
@@ -1654,6 +1651,10 @@
     # - service: xiaomi_aqara.stop_ringtone
     #   data:
     #     gw_mac: !secret xiaomi_gateway_mac
+# test end
+################################################################
+
+  #     gw_mac: !secret xiaomi_gateway_mac
 # test end
 ################################################################
 
