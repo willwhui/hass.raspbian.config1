@@ -13,8 +13,11 @@
   token: !secret aqicn_api_token
   locations:
     - zhuhai
+    # - macau
   stations:
     - zhuhai
+    # - "Subestação Macau Norte"
+    # - subestacao-macau-norte
 
 - platform: airvisual
   api_key: !secret airvisual_api_token
@@ -24,3 +27,4 @@
   longitude: !secret my_longitude
   radius: 30000
   show_on_map: false
+

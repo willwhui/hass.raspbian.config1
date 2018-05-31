@@ -542,7 +542,7 @@
     - service: tts.google_say
       entity_id: !secret current_media_player_id
       data:
-        message: "It is time to take the medicine, My lady."
+        message: "It is time to take the medicine and Vitamin D, My lady."
 
 - alias: "TTS for take medicine: check signal to stop repeating"
   hide_entity: true
@@ -1082,8 +1082,8 @@
     - platform: time
       at: !secret time_furifiers_turn_off_at_morning
   action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.all_purifiers
+    - service: automation.trigger
+      entity_id: automation.all_purifiers_control_off
 
 - alias: "Turn on all purifiers at night automatically when AQI Yellow"
   initial_state: false
@@ -1648,13 +1648,6 @@
 #   action:
 #     - service: input_boolean.turn_off
 #       entity_id: input_boolean.test
-    # - service: xiaomi_aqara.stop_ringtone
-    #   data:
-    #     gw_mac: !secret xiaomi_gateway_mac
-# test end
-################################################################
-
-  #     gw_mac: !secret xiaomi_gateway_mac
 # test end
 ################################################################
 
