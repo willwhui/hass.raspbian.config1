@@ -9,8 +9,9 @@
 
 - platform: command_line
   name: "skyworth tv"
-  command: !secret ping_skyworth_tv_ip_openwrt
+  command: !secret ping_skyworth_tv_ip
   device_class: connectivity
   payload_on: "success"
   payload_off: "fail"
   scan_interval: 5
+
