@@ -41,4 +41,8 @@
       friendly_name: "TV Box"
       command_on: !secret broadlink_rm2_switch_china_mobile_tv_box_on_packet
       command_off: !secret broadlink_rm2_switch_china_mobile_tv_box_on_packet
-  # emulated_hue_name: "Skyworth"  # no need 
+    air_conditioner:
+      friendly_name: "Air Conditioner"
+      command_on: !secret broadlink_rm2_switch_ac_on
+      command_off: !secret broadlink_rm2_switch_ac_off
+
