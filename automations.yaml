@@ -459,7 +459,7 @@
 ################################################################
 # begin: fill water can before go to school
 - alias: "TTS for fill water can: timer rule"
-  #initial_state: false
+  initial_state: false
   hide_entity: true
   trigger:
       platform: time
