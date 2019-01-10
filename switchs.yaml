@@ -13,16 +13,16 @@
 #       mac:  !secret orvibo_wifi_socket_s20c_mac
 #       name: "Switch Orange2"
 
-- platform: xiaomi_miio
-  name: "mi 1"
-  host: !secret xiaomi_wifi_socket_basic_ip
-  token: !secret xiaomi_wifi_socket_basic_token
-  # emulated_hue_name: "modem"  # no need 
+#- platform: xiaomi_miio
+#  name: "mi 1"
+#  host: !secret xiaomi_wifi_socket_basic_ip
+#  token: !secret xiaomi_wifi_socket_basic_token
+#  # emulated_hue_name: "modem"  # no need 
 
-- platform: xiaomi_miio
-  name: "mi 2"
-  host: !secret xiaomi_wifi_socket_basic_ip_2
-  token: !secret xiaomi_wifi_socket_basic_token_2
+#- platform: xiaomi_miio
+#  name: "mi 2"
+#  host: !secret xiaomi_wifi_socket_basic_ip_2
+#  token: !secret xiaomi_wifi_socket_basic_token_2
 
 - platform: broadlink
   host: !secret broadlink_rm2_switch_ip
@@ -33,16 +33,16 @@
       friendly_name: "TV"
       command_on: !secret broadlink_rm2_switch_skyworth_tv_on_packet
       command_off: !secret broadlink_rm2_switch_skyworth_tv_on_packet
-    skyworth_tv_mute:
-      friendly_name: "TV Mute"
-      command_on: !secret broadlink_rm2_switch_skyworth_tv_mute
-      command_off: !secret broadlink_rm2_switch_skyworth_tv_mute
+    # skyworth_tv_mute:
+    #   friendly_name: "TV Mute"
+    #   command_on: !secret broadlink_rm2_switch_skyworth_tv_mute
+    #   command_off: !secret broadlink_rm2_switch_skyworth_tv_mute
     china_mobile_tv_box:
       friendly_name: "TV Box"
       command_on: !secret broadlink_rm2_switch_china_mobile_tv_box_on_packet
       command_off: !secret broadlink_rm2_switch_china_mobile_tv_box_on_packet
-    air_conditioner:
-      friendly_name: "Air Conditioner"
-      command_on: !secret broadlink_rm2_switch_ac_on
-      command_off: !secret broadlink_rm2_switch_ac_off
+    # air_conditioner:
+    #   friendly_name: "Air Conditioner"
+    #   command_on: !secret broadlink_rm2_switch_ac_on
+    #   command_off: !secret broadlink_rm2_switch_ac_off
 
