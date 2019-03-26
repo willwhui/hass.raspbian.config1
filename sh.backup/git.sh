@@ -1,4 +1,4 @@
 cd /home/homeassistant/.homeassistant
 git status
-sudo su homeassistant
+sudo su -s /bin/bash homeassistant
 
