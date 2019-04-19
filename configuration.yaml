@@ -78,6 +78,8 @@ device_tracker: !include device_trackers.yaml
 
 timer: !include timers.yaml
 
+#air_quality: !include air_quality.yaml
+
 # Text to speech
 tts:
   - platform: google

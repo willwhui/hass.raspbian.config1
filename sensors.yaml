@@ -12,9 +12,10 @@
 - platform: waqi
   token: !secret aqicn_api_token
   locations:
-    - zhuhai
-    # - macau
-  stations:
-    - zhuhai
-    # - "Subestação Macau Norte"
-    # - subestacao-macau-norte
+    - macau
+#   stations:
+#     - subestacao-macau-norte
+#   locations:
+#     - zhuhai
+#   stations:
+#     - zhuhai

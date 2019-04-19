@@ -872,18 +872,18 @@
       entity_id: !secret current_media_player_id
       data_template: 
         message: >
-          {% if states.sensor.waqi_zhuhai.state | int >=  300 %}
-            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's Brown. It's Hazardous. Everyone should avoid all outdoor exertion.
-          {% elif states.sensor.waqi_zhuhai.state | int >=  201 %}
-            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's purple. It's Very Unhealthy. Active children and adults, and people with respiratory disease, such as asthma, should avoid all outdoor exertion; everyone else, especially children, should limit outdoor exertion.
-          {% elif states.sensor.waqi_zhuhai.state | int >=  151 %}
-            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's Red. It's Unhealthy. Active children and adults, and people with respiratory disease, such as asthma, should avoid prolonged outdoor exertion; everyone else, especially children, should limit prolonged outdoor exertion.
-          {% elif states.sensor.waqi_zhuhai.state | int >=  101 %}
-            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's orange. It's Unhealthy for Sensitive Groups. Active children and adults, and people with respiratory disease, such as asthma, should limit prolonged outdoor exertion.
-          {% elif states.sensor.waqi_zhuhai.state | int >=  51 %}
-            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's Yellow. It's Moderate. Active children and adults, and people with respiratory disease, such as asthma, should limit prolonged outdoor exertion.
+          {% if states.current_aqi_id.state | int >=  300 %}
+            Air Quality Index now: {{states.current_aqi_id.state}}. It's Brown. It's Hazardous. Everyone should avoid all outdoor exertion.
+          {% elif states.current_aqi_id.state | int >=  201 %}
+            Air Quality Index now: {{states.current_aqi_id.state}}. It's purple. It's Very Unhealthy. Active children and adults, and people with respiratory disease, such as asthma, should avoid all outdoor exertion; everyone else, especially children, should limit outdoor exertion.
+          {% elif states.current_aqi_id.state | int >=  151 %}
+            Air Quality Index now: {{states.current_aqi_id.state}}. It's Red. It's Unhealthy. Active children and adults, and people with respiratory disease, such as asthma, should avoid prolonged outdoor exertion; everyone else, especially children, should limit prolonged outdoor exertion.
+          {% elif states.current_aqi_id.state | int >=  101 %}
+            Air Quality Index now: {{states.current_aqi_id.state}}. It's orange. It's Unhealthy for Sensitive Groups. Active children and adults, and people with respiratory disease, such as asthma, should limit prolonged outdoor exertion.
+          {% elif states.current_aqi_id.state | int >=  51 %}
+            Air Quality Index now: {{states.current_aqi_id.state}}. It's Yellow. It's Moderate. Active children and adults, and people with respiratory disease, such as asthma, should limit prolonged outdoor exertion.
           {% else %}
-            Air Quality Index now: {{states.sensor.waqi_zhuhai.state}}. It's Green. It's Good. Have a nice day!
+            Air Quality Index now: {{states.current_aqi_id.state}}. It's Green. It's Good. Have a nice day!
           {% endif %}
     # - delay: '00:00:05' # left some time for tts data transporting
     # - service: tts.google_say
@@ -891,7 +891,7 @@
     #   data_template:
     #     language: "zh" 
     #     message: >
-    #       珠海现在的空气质量指数是：{{states.sensor.waqi_zhuhai.state}}
+    #       珠海现在的空气质量指数是：{{states.current_aqi_id.state}}
 
 
 # data_template: 
@@ -909,7 +909,7 @@
       to: 'on'
   condition:
     condition: numeric_state
-    entity_id: sensor.waqi_zhuhai
+    entity_id: current_aqi_id
     #below: 
     above: 300
   action:
@@ -930,7 +930,7 @@
       to: 'on'
   condition:
     condition: numeric_state
-    entity_id: sensor.waqi_zhuhai
+    entity_id: current_aqi_id
     below: 301
     above: 200
   action:
@@ -950,7 +950,7 @@
       to: 'on'
   condition:
     condition: numeric_state
-    entity_id: sensor.waqi_zhuhai
+    entity_id: current_aqi_id
     below: 201
     above: 150
   action:
@@ -970,7 +970,7 @@
       to: 'on'
   condition:
     condition: numeric_state
-    entity_id: sensor.waqi_zhuhai
+    entity_id: current_aqi_id
     below: 151
     above: 100
   action:
@@ -990,7 +990,7 @@
       to: 'on'
   condition:
     condition: numeric_state
-    entity_id: sensor.waqi_zhuhai
+    entity_id: current_aqi_id
     below: 101
     above: 50
   action:
@@ -1010,7 +1010,7 @@
       to: 'on'
   condition:
     condition: numeric_state
-    entity_id: sensor.waqi_zhuhai
+    entity_id: current_aqi_id
     below: 51
     #above: 50
   action:
@@ -1033,18 +1033,18 @@
       entity_id: !secret xiaomi_gateway_light_id
       data_template: 
         brightness: >
-          {% if states.sensor.waqi_zhuhai.state | int >=  300 %}
-            {{states.sensor.waqi_zhuhai.state | int - 300 + 150}}
-          {% elif states.sensor.waqi_zhuhai.state | int >=  201 %}
-            {{states.sensor.waqi_zhuhai.state | int - 200 + 150}}
-          {% elif states.sensor.waqi_zhuhai.state | int >=  151 %}
-            {{states.sensor.waqi_zhuhai.state | int}}
-          {% elif states.sensor.waqi_zhuhai.state | int >=  101 %}
-            {{states.sensor.waqi_zhuhai.state | int + 150}}
-          {% elif states.sensor.waqi_zhuhai.state | int >=  51 %}
-            {{states.sensor.waqi_zhuhai.state | int + 150}}
+          {% if states.current_aqi_id.state | int >=  300 %}
+            {{states.current_aqi_id.state | int - 300 + 150}}
+          {% elif states.current_aqi_id.state | int >=  201 %}
+            {{states.current_aqi_id.state | int - 200 + 150}}
+          {% elif states.current_aqi_id.state | int >=  151 %}
+            {{states.current_aqi_id.state | int}}
+          {% elif states.current_aqi_id.state | int >=  101 %}
+            {{states.current_aqi_id.state | int + 150}}
+          {% elif states.current_aqi_id.state | int >=  51 %}
+            {{states.current_aqi_id.state | int + 150}}
           {% else %}
-            {{states.sensor.waqi_zhuhai.state | int + 200}}
+            {{states.current_aqi_id.state | int + 200}}
           {% endif %}
 
 - alias: "Light on Air Quality Index: blink and turn off"
@@ -1106,12 +1106,12 @@
       seconds: 00
   condition:
     - condition: numeric_state
-      entity_id: sensor.waqi_zhuhai
+      entity_id: current_aqi_id
       above: 50
     # condition: and # this time condition won't work, don't know why
     # conditions:
     # - condition: numeric_state
-    #   entity_id: sensor.waqi_zhuhai
+    #   entity_id: current_aqi_id
     #   above: 50
     # - condition: time
     #   after: '00:00:00'
@@ -1129,7 +1129,7 @@
       seconds: 00
   condition:
     - condition: numeric_state
-      entity_id: sensor.waqi_zhuhai
+      entity_id: current_aqi_id
       below: 50
   action:
     - service: automation.trigger
