@@ -31,18 +31,18 @@
   switches:
     skyworth_tv:
       friendly_name: "TV"
-      command_on: !secret broadlink_rm2_switch_skyworth_tv_on_packet
-      command_off: !secret broadlink_rm2_switch_skyworth_tv_on_packet
-    # skyworth_tv_mute:
-    #   friendly_name: "TV Mute"
-    #   command_on: !secret broadlink_rm2_switch_skyworth_tv_mute
-    #   command_off: !secret broadlink_rm2_switch_skyworth_tv_mute
+      command_on: !secret remote_control_code_skyworth_tv_on_packet
+      command_off: !secret remote_control_code_skyworth_tv_on_packet
     china_mobile_tv_box:
       friendly_name: "TV Box"
-      command_on: !secret broadlink_rm2_switch_china_mobile_tv_box_on_packet
-      command_off: !secret broadlink_rm2_switch_china_mobile_tv_box_on_packet
+      command_on: !secret remote_control_code_china_mobile_tv_box_on_packet
+      command_off: !secret remote_control_code_china_mobile_tv_box_on_packet
     air_conditioner:
       friendly_name: "Air Conditioner"
-      command_on: !secret broadlink_rm2_switch_ac_on
-      command_off: !secret broadlink_rm2_switch_ac_off
+      command_on: !secret remote_control_code_ac_on
+      command_off: !secret remote_control_code_ac_off
+    tower_fan:
+      friendly_name: "Tower Fan"
+      command_on: !secret remote_control_code_tower_fan_on
+      command_off: !secret remote_control_code_tower_fan_off
 
